@@ -16,24 +16,20 @@
       <div class="container header-inner">
         <a href="index.html" class="logo">HabeshaMart</a>
 
-        <nav class="nav-links">
-          <a href="index.html" class="active">Home</a>
-          <a href="shop.html">Categories</a>
-          <a href="#">Artisans</a>
-        </nav>
+        <div class="search-bar center-search">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search for Heritage Products, Jebenas, or Kemis..." />
+        </div>
 
         <div class="header-actions">
-          <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search for Heritage Products..." />
+          <div class="lang-toggle">
+            <i class="fas fa-globe"></i>
+            <span>EN</span>
           </div>
-          <button
-            class="icon-btn"
-            id="auth-link-btn"
-            onclick="location.href='login.html'"
-          >
+          <a href="login.html" class="header-action-item" id="auth-link-btn">
             <i class="far fa-user"></i>
-          </button>
+            <span>Account</span>
+          </a>
           <div class="cart-icon" onclick="location.href='cart.html'">
             <i class="fas fa-shopping-cart"></i>
             <span id="cart-count">0</span>

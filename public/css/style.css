@@ -119,16 +119,20 @@ header {
 }
 
 .header-inner {
-    display: flex;
-    justify-content: space-between;
+    height: 80px;
+    display: grid;
+    grid-template-columns: 240px 1fr auto;
     align-items: center;
-    width: 100%;
+    gap: 40px;
 }
 
 .logo {
+    font-family: 'Outfit', sans-serif;
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--primary);
+    text-decoration: none;
+    letter-spacing: -0.5px;
 }
 
 .nav-links {
@@ -145,33 +149,62 @@ header {
     color: var(--primary);
 }
 
+.center-search {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
 }
 
-.icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    position: relative;
+.lang-toggle, .header-action-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: var(--label-md);
     color: var(--on-surface);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.header-action-item i, .lang-toggle i {
+    font-size: 18px;
+}
+
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
 }
 
 #cart-count {
     position: absolute;
     top: -8px;
-    right: -8px;
-    background-color: var(--primary);
+    right: -10px;
+    background-color: #A93700;
     color: white;
     font-size: 10px;
-    width: 16px;
-    height: 16px;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid white;
+}
+
+@media (max-width: 768px) {
+    .header-inner {
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+    }
+    .center-search { display: none; }
+    .header-action-item span, .lang-toggle span { display: none; }
 }
 
 /* Mobile Tab Bar */
