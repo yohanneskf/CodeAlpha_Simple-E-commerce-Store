@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteStore - Premium E-commerce</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">ELITE<span>STORE</span></a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/shop.html">Shop</a></li>
+                <li><a href="/login.html" id="auth-link">Login</a></li>
+            </ul>
+        </nav>
+        <div class="cart-icon" onclick="location.href='/cart.html'">
+            <i class="fas fa-shopping-cart fa-lg"></i>
+            <span id="cart-count">0</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Discover Premium Quality</h1>
+            <p>Elevate your lifestyle with our curated collection.</p>
+        </div>
+
+        <section id="products-section">
+            <h2 class="section-title">Latest Arrivals</h2>
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be loaded here via JS -->
+                <div class="loader">Loading products...</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 EliteStore. All rights reserved.</p>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

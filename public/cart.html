@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - EliteStore</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">ELITE<span>STORE</span></a>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/shop.html">Shop</a></li>
+                <li><a href="/login.html" id="auth-link">Login</a></li>
+            </ul>
+        </nav>
+        <div class="cart-icon" onclick="location.href='/cart.html'">
+            <i class="fas fa-shopping-cart fa-lg"></i>
+            <span id="cart-count">0</span>
+        </div>
+    </header>
+
+    <main>
+        <h1>Your Shopping Cart</h1>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+                <!-- Cart items will be rendered here -->
+            </tbody>
+        </table>
+
+        <div class="cart-total">
+            Total: <span id="cart-total">0 ETB</span>
+        </div>
+
+        <div style="text-align: right; margin-top: 2rem;">
+            <button class="btn btn-primary" style="padding: 1rem 3rem;" onclick="proceedToCheckout()">Checkout</button>
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        async function proceedToCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            if (!api.getToken()) {
+                alert('Please login to checkout.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            try {
+                const response = await api.post('/orders', {
+                    items: cart,
+                    totalAmount: total
+                });
+
+                if (response.checkoutUrl) {
+                    // Redirect to Chapa
+                    window.location.href = response.checkoutUrl;
+                } else if (response.order) {
+                    alert('Order created successfully (Mock mode)');
+                } else {
+                    alert('Checkout failed: ' + (response.message || 'Unknown error'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error during checkout.');
+            }
+        }
+    </script>
+</body>
+</html>

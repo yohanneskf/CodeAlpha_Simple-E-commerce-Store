@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Status - EliteStore</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">ELITE<span>STORE</span></a>
+    </header>
+
+    <main style="text-align: center; margin-top: 5rem;">
+        <div id="status-card" class="auth-container">
+            <h2 id="status-title">Checking Payment Status...</h2>
+            <p id="status-message">Please wait while we verify your transaction.</p>
+            <a href="/" class="btn btn-primary" style="margin-top: 2rem;">Back to Home</a>
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const tx_ref = urlParams.get('tx_ref');
+
+        async function verify() {
+            if (!tx_ref) {
+                document.getElementById('status-title').textContent = 'Invalid Transaction';
+                document.getElementById('status-message').textContent = 'No transaction reference found.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/orders/verify/${tx_ref}`);
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    document.getElementById('status-title').textContent = 'Payment Successful!';
+                    document.getElementById('status-title').style.color = 'var(--primary-color)';
+                    document.getElementById('status-message').textContent = 'Thank you for your purchase! Your order is being processed.';
+                    localStorage.removeItem('cart'); // Clear cart on success
+                } else {
+                    document.getElementById('status-title').textContent = 'Payment Verification Failed';
+                    document.getElementById('status-title').style.color = '#ef4444';
+                    document.getElementById('status-message').textContent = data.message || 'We could not verify your payment.';
+                }
+            } catch (err) {
+                document.getElementById('status-title').textContent = 'Error';
+                document.getElementById('status-message').textContent = 'An error occurred while verifying your payment.';
+            }
+        }
+
+        verify();
+    </script>
+</body>
+</html>
