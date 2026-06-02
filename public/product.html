@@ -28,6 +28,10 @@
             <i class="fas fa-globe"></i>
             <span>EN</span>
           </div>
+          <a href="wishlist.html" class="header-action-item">
+            <i class="far fa-heart"></i>
+            <span id="wishlist-count">0</span>
+          </a>
           <a href="login.html" class="header-action-item" id="auth-link-btn">
             <i class="far fa-user"></i>
             <span>Account</span>
@@ -232,12 +236,15 @@
 
             const stars = Array(5).fill('<i class="fas fa-star"></i>').join('');
 
+            const isWishlisted = wishlist.some(item => item.id === product.id);
             display.innerHTML = `
                 <div class="details-layout">
                     <div class="gallery-side">
                         <div class="main-image">
                             <img id="main-product-img" src="${gallery[0]}" alt="${product.name}">
-                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                            <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${product.id})">
+                                <i class="${isWishlisted ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
                         </div>
                         <div class="thumbnail-grid">
                             ${thumbsHtml}
@@ -316,108 +323,6 @@
             const btn = document.querySelector('.btn.btn-primary');
             btn.innerHTML = '<i class="fas fa-check"></i> Added to Cart!';
             setTimeout(() => btn.innerHTML = '<i class="fas fa-shopping-bag"></i> Add to Cart', 2000);
-        }
-
-        loadProductDetails();
-    </script>
-</body>
-</html>
-
-
-        async function loadProductDetails() {
-            const display = document.getElementById('product-details-view');
-            if (!productId) {
-                display.innerHTML = '<h1 class="headline-md">Heritage not found</h1>';
-                return;
-            }
-
-            try {
-                const product = await api.get(`/products/${productId}`);
-                document.title = `${product.name} - HabeshaMart`;
-                document.getElementById('breadcrumb-name').textContent = product.name;
-
-                display.innerHTML = `
-                    <div class="details-layout">
-                        <div class="gallery-side">
-                            <div class="main-image">
-                                <img src="${product.image}" alt="${product.name}">
-                                <button class="wishlist-btn"><i class="far fa-heart"></i></button>
-                            </div>
-                            <div class="thumbnail-grid">
-                                <img src="${product.image}" class="thumb active">
-                                <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&q=80" class="thumb">
-                                <img src="https://images.unsplash.com/photo-1518832553480-cd0e625ed3e6?w=400&q=80" class="thumb">
-                                <button class="thumb more-thumb" style="background:#f0eee9; border:none; display:flex; align-items:center; justify-content:center;">+2</button>
-                            </div>
-                        </div>
-                        <div class="content-side">
-                            <span class="product-badge badge-bestseller">Premium Heritage</span>
-                            <div class="rating-row" style="margin: 12px 0;">
-                                <div class="stars">
-                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                </div>
-                                <span class="label-sm">(${product.reviews || 0} Reviews)</span>
-                            </div>
-                            <h1 class="display-lg" style="margin-bottom: 12px;">${product.name}</h1>
-                            <p class="headline-md" style="color: var(--primary); margin-bottom: 32px;">${product.price.toLocaleString()} ETB</p>
-                            
-                            <div class="options-box">
-                                <p class="label-md" style="margin-bottom: 12px;">Selection Options</p>
-                                <div class="option-chips">
-                                    <button class="option-chip active"></button>
-                                    <button class="option-chip" style="background-color: #D4AF37;"></button>
-                                    <button class="option-chip" style="background-color: #E5E5E5;"></button>
-                                </div>
-                            </div>
-
-                            <div class="action-row" style="margin-top: 32px;">
-                                <div class="qty-selector" style="height: 56px; width: 140px;">
-                                    <button class="qty-btn" onclick="const i = document.getElementById('details-qty'); i.value = Math.max(1, i.value-1)">-</button>
-                                    <input type="number" id="details-qty" value="1" class="qty-input">
-                                    <button class="qty-btn" onclick="const i = document.getElementById('details-qty'); i.value = Number(i.value)+1">+</button>
-                                </div>
-                                <button class="btn btn-primary" style="flex: 1; height: 56px;" onclick="addFromDetails('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
-                                    <i class="fas fa-shopping-bag"></i> Add to Cart
-                                </button>
-                            </div>
-                            
-                            <button class="btn btn-secondary" style="width: 100%; margin-top: 16px; height: 56px; border-color: var(--outline-variant); color: var(--on-surface);">
-                                Buy with CBE Birr / Chapa
-                            </button>
-
-                            <div class="trust-indicators" style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                                <div class="trust-item">
-                                    <i class="fas fa-truck" style="color: var(--primary);"></i>
-                                    <span class="label-sm">Express Delivery <br> (2-3 Business Days)</span>
-                                </div>
-                                <div class="trust-item">
-                                    <i class="fas fa-shield-alt" style="color: var(--primary);"></i>
-                                    <span class="label-sm">Secure Payments <br> (End-to-End Encrypted)</span>
-                                </div>
-                            </div>
-
-                            <div class="tabs-control" style="margin-top: 40px;">
-                                <div class="tabs-header">
-                                    <button class="tab-btn active">Description</button>
-                                    <button class="tab-btn">Specifications</button>
-                                    <button class="tab-btn">Care Guide</button>
-                                </div>
-                                <div class="tab-content body-md" style="margin-top: 24px; color: var(--on-surface-variant);">
-                                    ${product.description}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } catch (err) {
-                display.innerHTML = '<h1 class="headline-md">Error loading heritage details</h1>';
-            }
-        }
-
-        function addFromDetails(id, name, price, image) {
-            const qty = parseInt(document.getElementById('details-qty').value) || 1;
-            for(let i=0; i<qty; i++) addToCart(id, name, price, image);
-            alert(`${qty} items added to your cart.`);
         }
 
         loadProductDetails();

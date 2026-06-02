@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Heritage Wishlist - HabeshaMart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background-color: var(--surface-container-lowest);">
+    <header>
+      <div class="container header-inner">
+        <a href="index.html" class="logo">HabeshaMart</a>
+
+        <nav class="main-nav">
+          <a href="index.html">Home</a>
+          <a href="shop.html">Categories</a>
+        </nav>
+
+        <div class="search-bar center-search">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search for Heritage Products..." />
+        </div>
+
+        <div class="header-actions">
+          <div class="lang-toggle">
+            <i class="fas fa-globe"></i>
+            <span>EN</span>
+          </div>
+          <a href="wishlist.html" class="header-action-item">
+            <i class="far fa-heart"></i>
+            <span id="wishlist-count">0</span>
+          </a>
+          <a href="login.html" class="header-action-item" id="auth-link-btn">
+            <i class="far fa-user"></i>
+            <span>Account</span>
+          </a>
+          <div class="cart-icon" onclick="location.href='cart.html'">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count">0</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+        <div style="margin-top: 60px; margin-bottom: 40px; text-align: center;">
+            <h1 class="display-lg">Saved Heritage</h1>
+            <p class="body-lg" style="color: var(--on-surface-variant);">Those treasures that spoke to you. Ready when you are.</p>
+        </div>
+
+        <div id="wishlist-grid" class="product-grid">
+            <!-- Wishlist items will be injected here -->
+            <div class="loader">Unfolding your collection...</div>
+        </div>
+
+        <div id="empty-wishlist" style="display: none; text-align: center; padding: 100px 0;">
+            <i class="far fa-heart" style="font-size: 64px; color: var(--outline-variant); margin-bottom: 24px;"></i>
+            <h3 class="headline-md">Your wishlist is empty</h3>
+            <p class="body-md" style="margin-bottom: 32px;">Start exploring our curated collection to find your next heirloom.</p>
+            <a href="shop.html" class="btn btn-primary">Discover Products</a>
+        </div>
+    </main>
+
+    <footer class="desktop-footer">
+        <div class="container footer-bottom" style="border: none;">
+            <p>&copy; 2026 HabeshaMart. Curating the best of Ethiopia.</p>
+        </div>
+    </footer>
+
+    <nav class="mobile-tab-bar">
+        <a href="index.html" class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="tab-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="wishlist.html" class="tab-item active">
+            <i class="fas fa-heart"></i>
+            <span>Saved</span>
+        </a>
+        <a href="profile.html" class="tab-item">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderWishlist();
+        });
+
+        function renderWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const grid = document.getElementById('wishlist-grid');
+            const emptyState = document.getElementById('empty-wishlist');
+
+            if (wishlist.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            grid.innerHTML = '';
+
+            wishlist.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image" onclick="location.href='product.html?id=${product.id}'">
+                        <img src="${product.image}" alt="${product.name}">
+                        <button class="wishlist-btn active" onclick="event.stopPropagation(); toggleWishlist(${product.id})">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="product-info" onclick="location.href='product.html?id=${product.id}'">
+                        <div class="product-category">${product.category.toUpperCase()}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-footer">
+                            <div class="product-price">${product.price.toLocaleString()} ETB</div>
+                            <button class="add-to-cart-sm" onclick="event.stopPropagation(); addToCart(${product.id})">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
@@ -201,22 +202,21 @@ async function loadProducts() {
         let badgeHtml = '';
         if (index % 3 === 0) badgeHtml = '<span class="product-badge badge-bestseller">Best Seller</span>';
         else if (index % 5 === 0) badgeHtml = '<span class="product-badge badge-limited">Limited</span>';
-
+        const isWishlisted = wishlist.some(item => item.id === product.id);
         card.innerHTML = `
-            <div class="product-image-wrap">
-                ${badgeHtml}
+            <div class="product-image" onclick="location.href='product.html?id=${product.id}'">
                 <img src="${product.image}" alt="${product.name}">
+                <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" onclick="event.stopPropagation(); toggleWishlist('${product.id}')">
+                    <i class="${isWishlisted ? 'fas' : 'far'} fa-heart"></i>
+                </button>
+                ${product.badge ? `<span class="badge-${product.badge.toLowerCase()}">${product.badge}</span>` : ''}
             </div>
-            <div class="product-info">
-                <p class="product-cat">${product.category}</p>
+            <div class="product-info" onclick="location.href='product.html?id=${product.id}'">
+                <div class="product-category">${product.category.toUpperCase()}</div>
                 <h3 class="product-name">${product.name}</h3>
-                <div class="product-rating">
-                    <i class="fas fa-star"></i>
-                    <span>${product.rating} (${product.reviews} reviews)</span>
-                </div>
-                <div class="product-price-row">
-                    <p class="product-price">${product.price.toLocaleString()} ETB</p>
-                    <button class="add-btn" onclick="addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
+                <div class="product-footer">
+                    <div class="product-price">${product.price.toLocaleString()} ETB</div>
+                    <button class="add-to-cart-sm" onclick="event.stopPropagation(); addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
                         <i class="fas fa-shopping-cart"></i>
                     </button>
                 </div>
@@ -226,6 +226,37 @@ async function loadProducts() {
     });
 }
 
+function toggleWishlist(id) {
+    const product = allCachedProducts.find(p => p.id === id);
+    if (!product) return;
+
+    const index = wishlist.findIndex(item => item.id === id);
+    if (index === -1) {
+        wishlist.push(product);
+    } else {
+        wishlist.splice(index, 1);
+    }
+
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    updateCartCount();
+    
+    // Refresh UI on pages with grid
+    if (typeof loadProducts === 'function') {
+        const grid = document.getElementById('product-grid');
+        if (grid) renderProducts(allCachedProducts, 'product-grid');
+    }
+    
+    // Update individual buttons if they exist (Product Detail Page)
+    const detailBtn = document.querySelector('.main-image .wishlist-btn');
+    if (detailBtn) {
+        const isNowWishlisted = wishlist.some(item => item.id === id);
+        detailBtn.classList.toggle('active', isNowWishlisted);
+        const icon = detailBtn.querySelector('i');
+        if (icon) {
+            icon.className = isNowWishlisted ? 'fas fa-heart' : 'far fa-heart';
+        }
+    }
+}
 
 function addToCart(id, name, price, image) {
     const existing = cart.find(item => item.id === id);
@@ -243,12 +274,16 @@ function saveCart() {
 }
 
 function updateCartCount() {
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const countEl = document.getElementById('cart-count');
-    if (countEl) countEl.textContent = count;
-    
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+        cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+    }
+    const wishlistCount = document.getElementById('wishlist-count');
+    if (wishlistCount) {
+        wishlistCount.textContent = wishlist.length;
+    }
     const countSummaryEl = document.getElementById('item-total-count');
-    if (countSummaryEl) countSummaryEl.textContent = count;
+    if (countSummaryEl) countSummaryEl.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
 }
 
 function renderCart() {
