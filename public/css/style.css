@@ -198,13 +198,34 @@ header {
     border: 2px solid white;
 }
 
+.secondary-nav {
+    border-top: 1px solid var(--surface-container-highest);
+    background-color: var(--surface-container-lowest);
+    height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.nav-row a {
+    text-decoration: none;
+    font: var(--label-md);
+    color: var(--on-surface-variant);
+    transition: color 0.2s ease;
+    font-weight: 600;
+}
+
+.nav-row a:hover {
+    color: var(--primary);
+}
+
 @media (max-width: 768px) {
-    .header-inner {
-        grid-template-columns: 1fr auto;
-        gap: 12px;
-    }
-    .center-search { display: none; }
-    .header-action-item span, .lang-toggle span { display: none; }
+    .secondary-nav { display: none; }
 }
 
 /* Mobile Tab Bar */
