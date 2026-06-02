@@ -121,9 +121,26 @@ header {
 .header-inner {
     height: 80px;
     display: grid;
-    grid-template-columns: 240px 1fr auto;
+    grid-template-columns: 200px auto 1fr auto;
     align-items: center;
-    gap: 40px;
+    gap: 32px;
+}
+
+.main-nav {
+    display: flex;
+    gap: 24px;
+}
+
+.main-nav a {
+    text-decoration: none;
+    font: var(--label-md);
+    color: var(--on-surface-variant);
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.main-nav a:hover {
+    color: var(--primary);
 }
 
 .logo {
