@@ -3,6 +3,7 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
     checkAuth();
+    updateActiveNav();
 
     if (document.getElementById('product-grid')) {
         loadProducts();
@@ -12,6 +13,20 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCart();
     }
 });
+
+function updateActiveNav() {
+    const path = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-links a, .tab-item');
+    
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === path || (path === 'index.html' && href === '/')) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
 
 function checkAuth() {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -28,51 +43,185 @@ function checkAuth() {
     }
 }
 
+const demoProducts = [
+    {
+        id: '1',
+        name: 'Artisan Jebena (Large)',
+        category: 'Handmade Ceramic',
+        price: 1450,
+        image: 'https://images.unsplash.com/photo-1594494024039-df071d64388e?w=800&q=80',
+        rating: 4.9,
+        reviews: 124
+    },
+    {
+        id: '2',
+        name: 'Modern Habesha Kemis',
+        category: 'Hand-spun Cotton',
+        price: 8900,
+        image: 'https://images.unsplash.com/photo-1590033062325-17730e25603d?w=800&q=80',
+        rating: 5.0,
+        reviews: 86
+    },
+    {
+        id: '3',
+        name: 'Authentic Berbere Blend',
+        category: 'Organic Spices',
+        price: 450,
+        image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80',
+        rating: 4.8,
+        reviews: 210
+    },
+    {
+        id: '4',
+        name: 'Gonderine Filigree Cross',
+        category: 'Silver Jewelry',
+        price: 3200,
+        image: 'https://images.unsplash.com/photo-1611085583191-a3b1a620e44a?w=800&q=80',
+        rating: 4.9,
+        reviews: 45
+    },
+    {
+        id: '5',
+        name: 'Sidama A-Grade Beans',
+        category: 'Coffee Beans',
+        price: 450,
+        image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80',
+        rating: 4.7,
+        reviews: 320
+    },
+    {
+        id: '6',
+        name: 'Woven Jijat Ceremony Mat',
+        category: 'Home Decor',
+        price: 2100,
+        image: 'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&q=80',
+        rating: 4.6,
+        reviews: 32
+    },
+    {
+        id: '7',
+        name: 'Ivory Teff (5kg Bag)',
+        category: 'Spices & Grains',
+        price: 1850,
+        image: 'https://images.unsplash.com/photo-1615485290382-441e4d019cb5?w=800&q=80',
+        rating: 4.9,
+        reviews: 540
+    },
+    {
+        id: '8',
+        name: 'Hand-woven Netela Scarf',
+        category: 'Traditional Wear',
+        price: 1200,
+        image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&q=80',
+        rating: 4.8,
+        reviews: 215
+    },
+    {
+        id: '9',
+        name: 'Lideta Porcelain Set',
+        category: 'Buna Essentials',
+        price: 3400,
+        image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80',
+        rating: 4.9,
+        reviews: 78
+    },
+    {
+        id: '10',
+        name: 'Agelgil Basketry (S)',
+        category: 'Artifacts',
+        price: 850,
+        image: 'https://images.unsplash.com/photo-1590736962231-5912384cda5a?w=800&q=80',
+        rating: 4.5,
+        reviews: 22
+    },
+    {
+        id: '11',
+        name: 'Ethiopian White Honey',
+        category: 'Organic Grains',
+        price: 950,
+        image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&q=80',
+        rating: 5.0,
+        reviews: 410
+    },
+    {
+        id: '12',
+        name: 'Leather Cross Sandals',
+        category: 'Handmade Shoes',
+        price: 2400,
+        image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&q=80',
+        rating: 4.7,
+        reviews: 56
+    },
+    {
+        id: '13',
+        name: 'Ebony Clay Gini Burner',
+        category: 'Incense',
+        price: 1200,
+        image: 'https://images.unsplash.com/photo-1578326457399-3b34dbbf23b8?w=800&q=80',
+        rating: 4.6,
+        reviews: 58
+    },
+    {
+        id: '14',
+        name: 'Hand-carved Meskel Cross',
+        category: 'Artifacts',
+        price: 4500,
+        image: 'https://images.unsplash.com/photo-1611085583191-a3b1a620e44a?w=800&q=80',
+        rating: 4.9,
+        reviews: 34
+    }
+];
+
 async function loadProducts() {
     const productGrid = document.getElementById('product-grid');
     if (!productGrid) return;
     
+    let products;
     try {
-        const products = await api.get('/products');
-        productGrid.innerHTML = '';
-        
-        products.forEach((product, index) => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            
-            // Randomly assign badges for demo purposes
-            let badgeHtml = '';
-            if (index % 3 === 0) badgeHtml = '<span class="product-badge badge-bestseller">Best Seller</span>';
-            else if (index % 5 === 0) badgeHtml = '<span class="product-badge badge-limited">Limited</span>';
-
-            card.innerHTML = `
-                <div class="product-image-wrap">
-                    ${badgeHtml}
-                    <img src="${product.image}" alt="${product.name}">
-                </div>
-                <div class="product-info">
-                    <p class="product-cat">${product.category}</p>
-                    <h3 class="product-name">${product.name}</h3>
-                    <div class="product-rating">
-                        <i class="fas fa-star"></i>
-                        <span>${product.rating || '4.8'} (${product.reviews || '20'} reviews)</span>
-                    </div>
-                    <div class="product-price-row">
-                        <p class="product-price">${product.price.toLocaleString()} ETB</p>
-                        <button class="add-btn" onclick="addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
-                            <i class="fas fa-shopping-cart"></i>
-                        </button>
-                    </div>
-                </div>
-                <div style="padding: 0 16px 16px;">
-                    <a href="/product.html?id=${product.id}" class="btn btn-ghost" style="width: 100%; font-size: 12px; height: 32px; border: 1px solid var(--outline-variant);">View Details</a>
-                </div>
-            `;
-            productGrid.appendChild(card);
-        });
+        products = await api.get('/products');
+        if (!products || products.length === 0 || products.error) {
+            products = demoProducts;
+        }
     } catch (err) {
-        productGrid.innerHTML = '<p>Failed to load our refined collection. Please try again.</p>';
+        console.warn('API inaccessible, using demo collection.');
+        products = demoProducts;
     }
+    
+    productGrid.innerHTML = '';
+    
+    products.forEach((product, index) => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        
+        let badgeHtml = '';
+        if (index % 3 === 0) badgeHtml = '<span class="product-badge badge-bestseller">Best Seller</span>';
+        else if (index % 5 === 0) badgeHtml = '<span class="product-badge badge-limited">Limited</span>';
+
+        card.innerHTML = `
+            <div class="product-image-wrap">
+                ${badgeHtml}
+                <img src="${product.image}" alt="${product.name}">
+            </div>
+            <div class="product-info">
+                <p class="product-cat">${product.category}</p>
+                <h3 class="product-name">${product.name}</h3>
+                <div class="product-rating">
+                    <i class="fas fa-star"></i>
+                    <span>${product.rating || '4.8'} (${product.reviews || '20'} reviews)</span>
+                </div>
+                <div class="product-price-row">
+                    <p class="product-price">${product.price.toLocaleString()} ETB</p>
+                    <button class="add-btn" onclick="addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </div>
+            </div>
+            <div style="padding: 0 16px 16px;">
+                <a href="product.html?id=${product.id}" class="btn btn-ghost" style="width: 100%; font-size: 12px; height: 32px; border: 1px solid var(--outline-variant);">View Details</a>
+            </div>
+        `;
+        productGrid.appendChild(card);
+    });
 }
 
 function addToCart(id, name, price, image) {
@@ -84,7 +233,6 @@ function addToCart(id, name, price, image) {
     }
     saveCart();
     updateCartCount();
-    // Subtle feedback could be added here
 }
 
 function saveCart() {
@@ -109,7 +257,7 @@ function renderCart() {
     if (!cartItems) return;
 
     if (cart.length === 0) {
-        cartItems.innerHTML = '<div style="text-align:center; padding: 48px;"><p class="body-lg">Your cart is empty.</p><a href="/shop.html" class="btn btn-primary" style="margin-top: 20px;">Start Shopping</a></div>';
+        cartItems.innerHTML = '<div style="text-align:center; padding: 48px;"><p class="body-lg">Your cart is empty.</p><a href="shop.html" class="btn btn-primary" style="margin-top: 20px;">Start Shopping</a></div>';
         if (subtotalEl) subtotalEl.textContent = '0 ETB';
         if (taxEl) taxEl.textContent = '0 ETB';
         if (cartTotalEl) cartTotalEl.textContent = '0 ETB';
@@ -130,7 +278,7 @@ function renderCart() {
             <div class="cart-item-info">
                 <div class="cart-item-header">
                     <h4 class="cart-item-title">${item.name}</h4>
-                    <p class="title-lg">${item.price} ETB</p>
+                    <p class="title-lg">${item.price.toLocaleString()} ETB</p>
                 </div>
                 <p class="cart-item-meta">Category: Authentic Heritage</p>
                 <div class="cart-item-actions">
@@ -146,7 +294,7 @@ function renderCart() {
         cartItems.appendChild(itemDiv);
     });
 
-    const tax = total * 0.15; // 15% VAT
+    const tax = total * 0.15;
     const finalTotal = total + tax;
 
     if (subtotalEl) subtotalEl.textContent = `${total.toLocaleString()} ETB`;

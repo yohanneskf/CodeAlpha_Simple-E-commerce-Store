@@ -10,7 +10,7 @@
 <body>
     <header>
         <div class="container header-inner">
-            <a href="/" class="logo">HabeshaMart</a>
+            <a href="index.html" class="logo">HabeshaMart</a>
         </div>
     </header>
 
@@ -147,7 +147,7 @@
                     Place Order
                 </button>
 
-                <a href="/cart.html" class="btn btn-ghost" style="width: 100%; margin-top: 16px;">
+                <a href="cart.html" class="btn btn-ghost" style="width: 100%; margin-top: 16px;">
                     <i class="fas fa-arrow-left"></i> Return to Cart
                 </a>
             </aside>
@@ -174,7 +174,7 @@
             const totalEl = document.getElementById('cart-total');
             
             if (cart.length === 0) {
-                location.href = '/cart.html';
+                location.href = 'cart.html';
                 return;
             }
 
@@ -212,7 +212,7 @@
                 // In a real app, send to API
                 // For now, clear cart and redirect
                 localStorage.removeItem('cart');
-                location.href = '/order-confirmation.html';
+                location.href='order-confirmation.html';
             } catch (err) {
                 alert('Checkout failed. Please try again.');
             }

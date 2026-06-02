@@ -20,11 +20,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
-// Serve static files for frontend routes
-app.get(/^(?!\/api).+/, (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
 // Database Sync & Server Start
 sequelize.sync({ force: false }).then(() => {
   console.log('Database connected and synced.');

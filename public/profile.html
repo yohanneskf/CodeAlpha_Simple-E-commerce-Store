@@ -10,10 +10,10 @@
 <body style="background-color: var(--surface-container-low);">
     <header>
         <div class="container header-inner">
-            <a href="/" class="logo">HabeshaMart</a>
+            <a href="index.html" class="logo">HabeshaMart</a>
             <nav class="nav-links">
-                <a href="/">Home</a>
-                <a href="/shop.html">Categories</a>
+                <a href="index.html">Home</a>
+                <a href="shop.html">Categories</a>
             </nav>
             <div class="header-actions">
                 <button class="icon-btn" id="auth-link-btn"><i class="fas fa-sign-out-alt"></i></button>
@@ -42,7 +42,7 @@
                     <div style="text-align: center; padding: 48px; border: 1px dashed var(--outline-variant); border-radius: var(--radius-md);">
                         <i class="fas fa-box-open" style="font-size: 40px; color: var(--outline-variant); margin-bottom: 16px;"></i>
                         <p class="body-md">You haven't placed any orders yet.</p>
-                        <a href="/shop.html" class="btn btn-primary" style="margin-top: 20px;">Explore Collection</a>
+                        <a href="shop.html" class="btn btn-primary" style="margin-top: 20px;">Explore Collection</a>
                     </div>
                 </div>
 
@@ -63,19 +63,19 @@
 
     <!-- Mobile Tab Bar same as index -->
     <nav class="mobile-tab-bar">
-        <a href="/" class="tab-item">
+        <a href="index.html" class="tab-item">
             <i class="fas fa-home"></i>
             <span>Home</span>
         </a>
-        <a href="/shop.html" class="tab-item">
+        <a href="shop.html" class="tab-item">
             <i class="fas fa-th-large"></i>
             <span>Categories</span>
         </a>
-        <a href="/cart.html" class="tab-item">
+        <a href="cart.html" class="tab-item">
             <i class="fas fa-shopping-cart"></i>
             <span>Cart</span>
         </a>
-        <a href="/profile.html" class="tab-item active">
+        <a href="profile.html" class="tab-item active">
             <i class="far fa-user"></i>
             <span>Profile</span>
         </a>
@@ -87,7 +87,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(localStorage.getItem('user'));
             if (!user) {
-                window.location.href = '/login.html';
+                window.location.href = 'login.html';
                 return;
             }
             document.getElementById('profile-name').textContent = user.username;
