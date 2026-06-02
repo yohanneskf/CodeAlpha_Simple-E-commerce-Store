@@ -115,7 +115,7 @@
                 card.innerHTML = `
                     <div class="product-image" onclick="location.href='product.html?id=${product.id}'">
                         <img src="${product.image}" alt="${product.name}">
-                        <button class="wishlist-btn active" onclick="event.stopPropagation(); toggleWishlist(${product.id})">
+                        <button class="wishlist-btn active" onclick="event.stopPropagation(); toggleWishlist('${product.id}')">
                             <i class="fas fa-heart"></i>
                         </button>
                     </div>
@@ -124,7 +124,7 @@
                         <h3 class="product-name">${product.name}</h3>
                         <div class="product-footer">
                             <div class="product-price">${product.price.toLocaleString()} ETB</div>
-                            <button class="add-to-cart-sm" onclick="event.stopPropagation(); addToCart(${product.id})">
+                            <button class="add-to-cart-sm" onclick="event.stopPropagation(); addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
                                 <i class="fas fa-shopping-cart"></i>
                             </button>
                         </div>
