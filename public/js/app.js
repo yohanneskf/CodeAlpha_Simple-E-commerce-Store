@@ -28,28 +28,48 @@ function checkAuth() {
 
 async function loadProducts() {
     const productGrid = document.getElementById('product-grid');
+    if (!productGrid) return;
+    
     try {
         const products = await api.get('/products');
         productGrid.innerHTML = '';
         
-        products.forEach(product => {
+        products.forEach((product, index) => {
             const card = document.createElement('div');
             card.className = 'product-card';
+            
+            // Randomly assign badges for demo purposes
+            let badgeHtml = '';
+            if (index % 3 === 0) badgeHtml = '<span class="product-badge badge-bestseller">Best Seller</span>';
+            else if (index % 5 === 0) badgeHtml = '<span class="product-badge badge-limited">Limited</span>';
+
             card.innerHTML = `
-                <img src="${product.image}" alt="${product.name}" class="product-image">
+                <div class="product-image-wrap">
+                    ${badgeHtml}
+                    <img src="${product.image}" alt="${product.name}">
+                </div>
                 <div class="product-info">
+                    <p class="product-cat">${product.category}</p>
                     <h3 class="product-name">${product.name}</h3>
-                    <p class="product-price">${product.price} ETB</p>
-                    <button class="btn btn-primary add-to-cart" onclick="addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
-                        Add to Cart
-                    </button>
-                    <a href="/product.html?id=${product.id}" style="display:block; text-align:center; margin-top:10px; color:var(--text-muted); text-decoration:none; font-size:0.9rem;">View Details</a>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <span>${product.rating || '4.8'} (${product.reviews || '20'} reviews)</span>
+                    </div>
+                    <div class="product-price-row">
+                        <p class="product-price">${product.price.toLocaleString()} ETB</p>
+                        <button class="add-btn" onclick="addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                    </div>
+                </div>
+                <div style="padding: 0 16px 16px;">
+                    <a href="/product.html?id=${product.id}" class="btn btn-ghost" style="width: 100%; font-size: 12px; height: 32px; border: 1px solid var(--outline-variant);">View Details</a>
                 </div>
             `;
             productGrid.appendChild(card);
         });
     } catch (err) {
-        productGrid.innerHTML = '<p>Failed to load products.</p>';
+        productGrid.innerHTML = '<p>Failed to load our refined collection. Please try again.</p>';
     }
 }
 

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed - HabeshaMart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="/" class="logo">HabeshaMart</a>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/shop.html">Categories</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="text-align: center; padding-top: 64px;">
+        <div class="success-icon" style="width: 80px; height: 80px; background-color: var(--tertiary-container); color: var(--tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 32px;">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <h1 class="display-lg">Amese-ginalehu!</h1>
+        <p class="body-lg" style="color: var(--on-surface-variant); max-width: 600px; margin: 12px auto 40px;">Your order has been placed successfully and is being prepared with care by our curators.</p>
+
+        <div class="form-grid-2" style="text-align: left; margin-bottom: 40px;">
+            <div class="checkout-card">
+                <p class="label-sm" style="text-transform: uppercase; margin-bottom: 8px;">Order Number</p>
+                <p class="title-lg" style="color: var(--primary);">#HM-8921</p>
+            </div>
+            <div class="checkout-card">
+                <p class="label-sm" style="text-transform: uppercase; margin-bottom: 8px;">Estimated Delivery</p>
+                <p class="title-lg" style="color: var(--tertiary);">Oct 24 - Oct 27</p>
+            </div>
+        </div>
+
+        <div class="form-grid-2" style="text-align: left; margin-bottom: 40px;">
+            <div class="checkout-card">
+                <p class="label-sm" style="text-transform: uppercase; margin-bottom: 8px;">Shipping To</p>
+                <p class="body-md" style="font-weight: 600;">Abebe Balcha</p>
+                <p class="label-sm">Bole Road, Near Edna Mall <br> Addis Ababa, Ethiopia</p>
+            </div>
+            <div class="checkout-card">
+                <p class="label-sm" style="text-transform: uppercase; margin-bottom: 8px;">Payment Method</p>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div class="badge cbe" style="font-size: 10px;">CBE BIRR</div>
+                    <span class="label-sm">CBE Birr (....4829)</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" style="height: 56px; padding: 0 40px;">
+            <i class="fas fa-truck"></i> Track Order
+        </button>
+        <div style="margin-top: 16px;">
+            <a href="/" class="btn btn-ghost">Continue Shopping</a>
+        </div>
+
+        <section style="margin-top: 80px; margin-bottom: 80px;">
+            <div class="section-header">
+                <h2 class="headline-md">While you wait...</h2>
+                <a href="#" class="label-md">Explore More Stories</a>
+            </div>
+            <div class="promo-grid">
+                <div class="product-card" style="padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1590736962231-5912384cda5a?w=800" style="width: 100%; height: 240px; object-fit: cover;">
+                    <div style="padding: 24px;">
+                        <span class="badge-limited" style="position: static; font-size: 10px;">Heritage</span>
+                        <h4 class="title-lg" style="margin-top: 12px;">The Art of Shemma</h4>
+                        <p class="label-sm" style="margin-top: 8px; color: var(--on-surface-variant);">Meet Mulu, the master weaver behind your new scarf. Her family has practiced the...</p>
+                        <a href="#" class="btn btn-ghost" style="padding: 0; margin-top: 16px; color: var(--primary);">Read Her Story <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="product-card" style="padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1594494024039-df071d64388e?w=800" style="width: 100%; height: 240px; object-fit: cover;">
+                    <div style="padding: 24px;">
+                        <span class="badge-bestseller" style="position: static; font-size: 10px; background-color: var(--tertiary-container); color: var(--on-tertiary-container);">Tradition</span>
+                        <h4 class="title-lg" style="margin-top: 12px;">Bean to Jebena</h4>
+                        <p class="label-sm" style="margin-top: 8px; color: var(--on-surface-variant);">Discover the Kaffa region, where your organic coffee was harvested by local...</p>
+                        <a href="#" class="btn btn-ghost" style="padding: 0; margin-top: 16px; color: var(--primary);">Explore the Region <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="desktop-footer">
+        <div class="container footer-bottom" style="border: none;">
+            <p>&copy; 2026 HabeshaMart. Heritage Modernism in Commerce.</p>
+        </div>
+    </footer>
+
+    <nav class="mobile-tab-bar">
+        <a href="/" class="tab-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/shop.html" class="tab-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/cart.html" class="tab-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+        <a href="/profile.html" class="tab-item">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

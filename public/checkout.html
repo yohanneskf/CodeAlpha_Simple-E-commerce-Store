@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - HabeshaMart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="/" class="logo">HabeshaMart</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Progress Steps -->
+        <div class="checkout-steps">
+            <div class="step active">
+                <div class="step-num">1</div>
+                <span>Shipping</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <span>Payment</span>
+            </div>
+            <div class="step-divider"></div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <span>Review</span>
+            </div>
+        </div>
+
+        <div class="cart-layout">
+            <div class="checkout-forms">
+                <!-- Shipping Address Card -->
+                <section class="checkout-card">
+                    <h3 class="title-lg" style="margin-bottom: 24px;"><i class="fas fa-truck" style="margin-right: 12px; color: var(--primary);"></i> Shipping Address</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="input-field" placeholder="e.g. Abebe Balcha">
+                        </div>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Region</label>
+                            <select class="input-field">
+                                <option>Addis Ababa</option>
+                                <option>Oromia</option>
+                                <option>Amhara</option>
+                                <option>Tigray</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Kifle Ketema</label>
+                            <input type="text" class="input-field" placeholder="e.g. Bole">
+                        </div>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Woreda</label>
+                            <input type="text" class="input-field" placeholder="e.g. 03">
+                        </div>
+                        <div class="form-group">
+                            <label>House Number / Landmark</label>
+                            <input type="text" class="input-field" placeholder="e.g. Near Edna Mall">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <div style="display: flex; gap: 8px;">
+                                <span class="input-field" style="width: 80px; display: flex; align-items: center; justify-content: center;">+251</span>
+                                <input type="text" class="input-field" placeholder="911 234 567">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Payment Method Card -->
+                <section class="checkout-card" style="margin-top: 24px;">
+                    <h3 class="title-lg" style="margin-bottom: 24px;"><i class="fas fa-wallet" style="margin-right: 12px; color: var(--primary);"></i> Payment Method</h3>
+                    
+                    <div class="payment-option active">
+                        <div class="option-header">
+                            <div class="option-info">
+                                <img src="https://chapa.co/favicon.png" alt="Chapa" width="32">
+                                <div>
+                                    <p class="label-md">Chapa</p>
+                                    <p class="label-sm" style="color: var(--on-surface-variant);">Pay securely with local cards and mobile money.</p>
+                                </div>
+                            </div>
+                            <div class="radio-btn active"></div>
+                        </div>
+                    </div>
+
+                    <div class="payment-option">
+                        <div class="option-header">
+                            <div class="option-info">
+                                <div class="badge cbe" style="width: 32px; height: 32px; padding:0; display: flex; align-items: center; justify-content: center; font-size: 8px;">CBE</div>
+                                <div>
+                                    <p class="label-md">CBE Birr</p>
+                                    <p class="label-sm" style="color: var(--on-surface-variant);">Direct transfer from your Commercial Bank of Ethiopia account.</p>
+                                </div>
+                            </div>
+                            <div class="radio-btn"></div>
+                        </div>
+                    </div>
+
+                    <div class="trust-banner" style="margin-top: 24px;">
+                        <i class="fas fa-shield-halved"></i>
+                        <p class="label-sm">Heritage Modernism Guarantee: Secure processing and authentic quality checks on every order shipped from Ethiopia.</p>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="order-summary">
+                <h3 class="title-lg" style="margin-bottom: 24px;">Order Summary</h3>
+                <div id="checkout-items">
+                    <!-- Items -->
+                </div>
+                
+                <hr class="summary-divider">
+                
+                <div class="summary-row">
+                    <span class="body-md">Subtotal</span>
+                    <span class="body-md" id="subtotal-amount">0 ETB</span>
+                </div>
+                <div class="summary-row">
+                    <span class="body-md">Shipping (Standard)</span>
+                    <span class="body-md">150.00 ETB</span>
+                </div>
+                <div class="summary-row">
+                    <span class="body-md">Tax (VAT 15%)</span>
+                    <span class="body-md" id="tax-amount">0 ETB</span>
+                </div>
+                
+                <div class="summary-row total-row">
+                    <span class="title-lg">Total</span>
+                    <span class="title-lg" id="cart-total" style="color: var(--primary);">0 ETB</span>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; height: 56px; margin-top: 24px;" onclick="placeOrder()">
+                    Place Order
+                </button>
+
+                <a href="/cart.html" class="btn btn-ghost" style="width: 100%; margin-top: 16px;">
+                    <i class="fas fa-arrow-left"></i> Return to Cart
+                </a>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="desktop-footer">
+        <div class="container footer-bottom" style="border: none;">
+            <p>&copy; 2026 HabeshaMart. Heritage Modernism in Commerce.</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCheckoutSummary();
+        });
+
+        function renderCheckoutSummary() {
+            const container = document.getElementById('checkout-items');
+            const subtotalEl = document.getElementById('subtotal-amount');
+            const taxEl = document.getElementById('tax-amount');
+            const totalEl = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                location.href = '/cart.html';
+                return;
+            }
+
+            container.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'summary-item';
+                itemDiv.innerHTML = `
+                    <div style="display:flex; gap:12px; margin-bottom:16px;">
+                        <img src="${item.image}" width="48" height="48" style="border-radius:8px; object-fit:cover;">
+                        <div style="flex:1;">
+                            <p class="label-md">${item.name}</p>
+                            <p class="label-sm" style="color:var(--on-surface-variant);">Qty: ${item.quantity}</p>
+                        </div>
+                        <p class="label-md">${(item.price * item.quantity).toLocaleString()} ETB</p>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+
+            const tax = total * 0.15;
+            const shipping = 150;
+            const finalTotal = total + tax + shipping;
+
+            subtotalEl.textContent = `${total.toLocaleString()} ETB`;
+            taxEl.textContent = `${tax.toLocaleString()} ETB`;
+            totalEl.textContent = `${finalTotal.toLocaleString()} ETB`;
+        }
+
+        async function placeOrder() {
+            try {
+                // In a real app, send to API
+                // For now, clear cart and redirect
+                localStorage.removeItem('cart');
+                location.href = '/order-confirmation.html';
+            } catch (err) {
+                alert('Checkout failed. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>
