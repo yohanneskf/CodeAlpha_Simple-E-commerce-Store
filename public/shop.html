@@ -3,39 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop - EliteStore</title>
+    <title>Heritage Collection - HabeshaMart</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Header same as index -->
     <header>
-        <a href="/" class="logo">ELITE<span>STORE</span></a>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/shop.html">Shop</a></li>
-                <li><a href="/login.html" id="auth-link">Login</a></li>
-            </ul>
-        </nav>
-        <div class="cart-icon" onclick="location.href='/cart.html'">
-            <i class="fas fa-shopping-cart fa-lg"></i>
-            <span id="cart-count">0</span>
+        <div class="container header-inner">
+            <a href="/" class="logo">HabeshaMart</a>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/shop.html" class="active">Categories</a>
+            </nav>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search heritage...">
+                </div>
+                <div class="cart-icon" onclick="location.href='/cart.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main>
-        <h1>Browse All Products</h1>
-        <section id="products-section">
-            <div class="product-grid" id="product-grid">
-                <!-- Products will be loaded here via JS -->
-                <div class="loader">Loading products...</div>
+    <main class="container">
+        <div style="margin-top: 40px; margin-bottom: 24px;">
+            <h1 class="headline-md">Heritage Collection</h1>
+            <p class="body-md" style="color: var(--on-surface-variant);">Discover the finest crafts from every corner of Ethiopia.</p>
+        </div>
+
+        <div class="shop-layout">
+            <!-- Filter Sidebar -->
+            <aside class="filter-sidebar">
+                <div class="filter-group">
+                    <h4 class="label-md">Categories</h4>
+                    <ul>
+                        <li><label class="label-sm"><input type="checkbox" checked> All Items</label></li>
+                        <li><label class="label-sm"><input type="checkbox"> Buna Essentials</label></li>
+                        <li><label class="label-sm"><input type="checkbox"> Traditional Wear</label></li>
+                        <li><label class="label-sm"><input type="checkbox"> Spices & Grains</label></li>
+                        <li><label class="label-sm"><input type="checkbox"> Silver Jewelry</label></li>
+                    </ul>
+                </div>
+
+                <div class="filter-group" style="margin-top: 32px;">
+                    <h4 class="label-md">Price Range (ETB)</h4>
+                    <div style="margin-top: 16px;">
+                        <input type="range" min="0" max="25000" step="500" style="width: 100%;">
+                        <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                            <span class="label-sm">0</span>
+                            <span class="label-sm">25k+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group" style="margin-top: 32px;">
+                    <h4 class="label-md">Region Origin</h4>
+                    <select class="input-field" style="margin-top: 12px; font-size: 12px; height: 36px;">
+                        <option>All Regions</option>
+                        <option>Gojjam (Peppers)</option>
+                        <option>Sidama (Coffee)</option>
+                        <option>Gonder (Silver)</option>
+                    </select>
+                </div>
+            </aside>
+
+            <!-- Product Grid -->
+            <div class="shop-content">
+                <div class="sort-bar" style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+                    <select class="btn btn-ghost" style="border: 1px solid var(--outline-variant); height: 40px; font-size: 12px;">
+                        <option>Sort by: Newest First</option>
+                        <option>Sort by: Price Low to High</option>
+                        <option>Sort by: Popularity</option>
+                    </select>
+                </div>
+                <div class="product-grid" id="product-grid">
+                    <div class="loader">Refining the collection...</div>
+                </div>
             </div>
-        </section>
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2026 EliteStore. All rights reserved.</p>
+    <footer class="desktop-footer">
+        <div class="container footer-bottom" style="border: none; padding-top: 0;">
+            <p>&copy; 2026 HabeshaMart. Connecting Heritage to Home.</p>
+        </div>
     </footer>
+
+    <!-- Mobile Tab Bar same as index -->
+    <nav class="mobile-tab-bar">
+        <a href="/" class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/shop.html" class="tab-item active">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/cart.html" class="tab-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+        <a href="/profile.html" class="tab-item">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
 
     <script src="js/api.js"></script>
     <script src="js/app.js"></script>

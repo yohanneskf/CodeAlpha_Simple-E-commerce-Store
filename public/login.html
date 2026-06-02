@@ -3,33 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - EliteStore</title>
+    <title>Login - HabeshaMart</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body style="background-color: var(--surface-container-low);">
     <header>
-        <a href="/" class="logo">ELITE<span>STORE</span></a>
+        <div class="container header-inner">
+            <a href="/" class="logo">HabeshaMart</a>
+        </div>
     </header>
 
-    <main>
-        <div class="auth-container">
-            <h2>Welcome Back</h2>
+    <main class="container">
+        <div class="auth-card" style="max-width: 440px; margin: 80px auto; background: white; padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--surface-container-highest); box-shadow: var(--shadow-soft);">
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h1 class="headline-md">Welcome Back</h1>
+                <p class="body-md" style="color: var(--on-surface-variant);">Access your Heritage Collection and track orders.</p>
+            </div>
+
             <form id="login-form">
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="email" required placeholder="your@email.com">
+                    <label>Email Address</label>
+                    <input type="email" id="email" class="input-field" required placeholder="e.g. bekele@example.com">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 8px;">
                     <label>Password</label>
-                    <input type="password" id="password" required placeholder="••••••••">
+                    <input type="password" id="password" class="input-field" required placeholder="••••••••">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%">Login</button>
+                <div style="text-align: right; margin-bottom: 24px;">
+                    <a href="#" class="label-sm" style="color: var(--primary);">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; height: 56px;">
+                    Sign In
+                </button>
             </form>
-            <p style="margin-top: 1.5rem; text-align: center; color: var(--text-muted);">
-                Don't have an account? <a href="/register.html" style="color: var(--primary-color);">Register</a>
-            </p>
+
+            <div style="margin: 32px 0; display: flex; align-items: center; gap: 16px;">
+                <hr style="flex: 1; border: 0; border-top: 1px solid var(--outline-variant);">
+                <span class="label-sm" style="color: var(--on-surface-variant);">OR</span>
+                <hr style="flex: 1; border: 0; border-top: 1px solid var(--outline-variant);">
+            </div>
+
+            <div style="text-align: center;">
+                <p class="body-md">New to HabeshaMart? <a href="/register.html" style="color: var(--primary); font-weight: 600;">Explore Membership</a></p>
+            </div>
         </div>
     </main>
+
+    <footer class="desktop-footer" style="background: none; border: none; margin-top: 0;">
+        <div class="container footer-bottom" style="border: none; justify-content: center;">
+            <p>&copy; 2026 HabeshaMart. Authentic Heritage in Every Click.</p>
+        </div>
+    </footer>
 
     <script src="js/api.js"></script>
     <script>
@@ -45,10 +71,10 @@
                     localStorage.setItem('user', JSON.stringify(response.user));
                     window.location.href = '/';
                 } else {
-                    alert(response.message || 'Login failed');
+                    alert(response.message || 'Login failed. Please check your credentials.');
                 }
             } catch (err) {
-                alert('An error occurred during login');
+                alert('An error occurred during login. Please try again.');
             }
         });
     </script>

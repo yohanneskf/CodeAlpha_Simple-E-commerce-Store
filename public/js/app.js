@@ -15,13 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function checkAuth() {
     const user = JSON.parse(localStorage.getItem('user'));
-    const authLink = document.getElementById('auth-link');
-    if (user && authLink) {
-        authLink.textContent = 'Logout';
-        authLink.href = '#';
-        authLink.onclick = (e) => {
+    const authBtn = document.getElementById('auth-link-btn');
+    if (user && authBtn) {
+        authBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>';
+        authBtn.title = 'Logout';
+        authBtn.onclick = (e) => {
             e.preventDefault();
-            api.logout();
+            if (confirm('Logout from HabeshaMart?')) {
+                api.logout();
+            }
         };
     }
 }

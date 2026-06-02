@@ -3,37 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - EliteStore</title>
+    <title>Register - HabeshaMart</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body style="background-color: var(--surface-container-low);">
     <header>
-        <a href="/" class="logo">ELITE<span>STORE</span></a>
+        <div class="container header-inner">
+            <a href="/" class="logo">HabeshaMart</a>
+        </div>
     </header>
 
-    <main>
-        <div class="auth-container">
-            <h2>Join EliteStore</h2>
+    <main class="container">
+        <div class="auth-card" style="max-width: 480px; margin: 60px auto; background: white; padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--surface-container-highest); box-shadow: var(--shadow-soft);">
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h1 class="headline-md">Join HabeshaMart</h1>
+                <p class="body-md" style="color: var(--on-surface-variant);">Start your journey through Ethiopia's finest craftsmanship.</p>
+            </div>
+
             <form id="register-form">
                 <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" id="username" required placeholder="Name">
+                    <label>Full Name</label>
+                    <input type="text" id="username" class="input-field" required placeholder="e.g. Almaz Tesfaye">
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="email" required placeholder="your@email.com">
+                    <label>Email Address</label>
+                    <input type="email" id="email" class="input-field" required placeholder="e.g. almaz@example.com">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="password" required placeholder="••••••••">
+                    <input type="password" id="password" class="input-field" required placeholder="Min. 8 characters">
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%">Register</button>
+                <div class="form-group" style="margin-bottom: 24px;">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm-password" class="input-field" required placeholder="••••••••">
+                </div>
+
+                <div class="label-sm" style="margin-bottom: 24px; color: var(--on-surface-variant);">
+                    <input type="checkbox" required style="margin-right: 8px;"> I agree to the <a href="#" style="color: var(--primary);">Terms of Service</a> and <a href="#" style="color: var(--primary);">Privacy Policy</a>.
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; height: 56px;">
+                    Create Account
+                </button>
             </form>
-            <p style="margin-top: 1.5rem; text-align: center; color: var(--text-muted);">
-                Already have an account? <a href="/login.html" style="color: var(--primary-color);">Login</a>
-            </p>
+
+            <div style="text-align: center; margin-top: 32px;">
+                <p class="body-md">Already have an account? <a href="/login.html" style="color: var(--primary); font-weight: 600;">Sign In</a></p>
+            </div>
         </div>
     </main>
+
+    <footer class="desktop-footer" style="background: none; border: none; margin-top: 0;">
+        <div class="container footer-bottom" style="border: none; justify-content: center;">
+            <p>&copy; 2026 HabeshaMart. Supporting Local Artisans.</p>
+        </div>
+    </footer>
 
     <script src="js/api.js"></script>
     <script>
@@ -42,13 +67,18 @@
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const confirm = document.getElementById('confirm-password').value;
+
+            if (password !== confirm) {
+                alert('Passwords do not match');
+                return;
+            }
 
             try {
                 const response = await api.post('/auth/register', { username, email, password });
-                if (response.token) {
-                    api.setToken(response.token);
-                    localStorage.setItem('user', JSON.stringify(response.user));
-                    window.location.href = '/';
+                if (response.id) {
+                    alert('Account created successfully! Please login.');
+                    window.location.href = '/login.html';
                 } else {
                     alert(response.message || 'Registration failed');
                 }

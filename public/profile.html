@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - HabeshaMart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background-color: var(--surface-container-low);">
+    <header>
+        <div class="container header-inner">
+            <a href="/" class="logo">HabeshaMart</a>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/shop.html">Categories</a>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn" id="auth-link-btn"><i class="fas fa-sign-out-alt"></i></button>
+                <div class="cart-icon" onclick="location.href='/cart.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="profile-layout" style="margin-top: 40px; display: grid; grid-template-columns: 300px 1fr; gap: 40px; margin-bottom: 80px;">
+            <aside class="checkout-card" style="height: fit-content; text-align: center;">
+                <div style="width: 120px; height: 120px; border-radius: 50%; background-color: var(--primary-container); color: var(--on-primary-container); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; font-weight: 700;">
+                    <span id="profile-initials">U</span>
+                </div>
+                <h3 class="title-lg" id="profile-name">User Name</h3>
+                <p class="label-sm" id="profile-email">user@example.com</p>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 24px; font-size: 12px;" onclick="api.logout()">Logout</button>
+            </aside>
+
+            <div class="profile-content">
+                <div class="checkout-card">
+                    <h3 class="title-lg" style="margin-bottom: 24px;">Order History</h3>
+                    <div style="text-align: center; padding: 48px; border: 1px dashed var(--outline-variant); border-radius: var(--radius-md);">
+                        <i class="fas fa-box-open" style="font-size: 40px; color: var(--outline-variant); margin-bottom: 16px;"></i>
+                        <p class="body-md">You haven't placed any orders yet.</p>
+                        <a href="/shop.html" class="btn btn-primary" style="margin-top: 20px;">Explore Collection</a>
+                    </div>
+                </div>
+
+                <div class="checkout-card" style="margin-top: 24px;">
+                    <h3 class="title-lg" style="margin-bottom: 24px;">Saved Addresses</h3>
+                    <p class="label-sm" style="color: var(--on-surface-variant);">No saved addresses found.</p>
+                    <button class="btn btn-ghost" style="padding: 0; margin-top: 12px; color: var(--primary);">+ Add New Address</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="desktop-footer">
+        <div class="container footer-bottom" style="border: none;">
+            <p>&copy; 2026 HabeshaMart. Heritage in Every Click.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Tab Bar same as index -->
+    <nav class="mobile-tab-bar">
+        <a href="/" class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/shop.html" class="tab-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/cart.html" class="tab-item">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+        <a href="/profile.html" class="tab-item active">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = '/login.html';
+                return;
+            }
+            document.getElementById('profile-name').textContent = user.username;
+            document.getElementById('profile-email').textContent = user.email;
+            document.getElementById('profile-initials').textContent = user.username.charAt(0).toUpperCase();
+        });
+    </script>
+</body>
+</html>
