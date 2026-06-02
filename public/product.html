@@ -85,6 +85,230 @@
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
 
+        // Extra gallery images per product category
+        const galleryImages = {
+            'Handmade Ceramic':  [
+                'https://images.unsplash.com/photo-1594494024039-df071d64388e?w=800&q=80',
+                'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=800&q=80',
+                'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&q=80',
+                'https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?w=800&q=80'
+            ],
+            'Hand-spun Cotton': [
+                'https://images.unsplash.com/photo-1590033062325-17730e25603d?w=800&q=80',
+                'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&q=80',
+                'https://images.unsplash.com/photo-1558171813-0c11cd6ed9a6?w=800&q=80',
+                'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80'
+            ],
+            'Organic Spices': [
+                'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80',
+                'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=800&q=80',
+                'https://images.unsplash.com/photo-1506806732259-39c2d0268443?w=800&q=80',
+                'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800&q=80'
+            ],
+            'Silver Jewelry': [
+                'https://images.unsplash.com/photo-1611085583191-a3b1a620e44a?w=800&q=80',
+                'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80',
+                'https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=800&q=80',
+                'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80'
+            ],
+            'Coffee Beans': [
+                'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80',
+                'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80',
+                'https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?w=800&q=80',
+                'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80'
+            ],
+            'Home Decor': [
+                'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&q=80',
+                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
+                'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
+                'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=800&q=80'
+            ],
+            'Spices & Grains': [
+                'https://images.unsplash.com/photo-1615485290382-441e4d019cb5?w=800&q=80',
+                'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=800&q=80',
+                'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&q=80',
+                'https://images.unsplash.com/photo-1543340713-b27f35c75490?w=800&q=80'
+            ],
+            'Traditional Wear': [
+                'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&q=80',
+                'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80',
+                'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+                'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80'
+            ],
+            'Buna Essentials': [
+                'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80',
+                'https://images.unsplash.com/photo-1594494024039-df071d64388e?w=800&q=80',
+                'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80',
+                'https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?w=800&q=80'
+            ],
+            'Artifacts': [
+                'https://images.unsplash.com/photo-1590736962231-5912384cda5a?w=800&q=80',
+                'https://images.unsplash.com/photo-1611085583191-a3b1a620e44a?w=800&q=80',
+                'https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&q=80',
+                'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=800&q=80'
+            ],
+            'Organic Grains': [
+                'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&q=80',
+                'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=800&q=80',
+                'https://images.unsplash.com/photo-1543340713-b27f35c75490?w=800&q=80',
+                'https://images.unsplash.com/photo-1615485290382-441e4d019cb5?w=800&q=80'
+            ],
+            'Handmade Shoes': [
+                'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&q=80',
+                'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80',
+                'https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800&q=80',
+                'https://images.unsplash.com/photo-1566206591568-e31d939df0a7?w=800&q=80'
+            ],
+            'Incense': [
+                'https://images.unsplash.com/photo-1578326457399-3b34dbbf23b8?w=800&q=80',
+                'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=800&q=80',
+                'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80',
+                'https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?w=800&q=80'
+            ]
+        };
+
+        function getGallery(product) {
+            return galleryImages[product.category] || [
+                product.image,
+                'https://images.unsplash.com/photo-1594494024039-df071d64388e?w=800&q=80',
+                'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80',
+                'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80'
+            ];
+        }
+
+        function setMainImage(src) {
+            document.getElementById('main-product-img').src = src;
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+        }
+
+        async function loadProductDetails() {
+            const display = document.getElementById('product-details-view');
+            if (!productId) {
+                display.innerHTML = '<h1 class="headline-md">Heritage not found</h1>';
+                return;
+            }
+
+            let product;
+            try {
+                product = await api.get(`/products/${productId}`);
+                if (!product || product.error) throw new Error('not found');
+            } catch (e) {
+                // Fall back to demoProducts
+                product = demoProducts.find(p => p.id === productId);
+            }
+
+            if (!product) {
+                display.innerHTML = '<h1 class="headline-md">Heritage item not found</h1>';
+                return;
+            }
+
+            document.title = `${product.name} - HabeshaMart`;
+            document.getElementById('breadcrumb-name').textContent = product.name;
+
+            const gallery = getGallery(product);
+            // Use product.image as first image
+            gallery[0] = product.image;
+
+            const thumbsHtml = gallery.map((img, i) => `
+                <img src="${img}" class="thumb${i === 0 ? ' active' : ''}" 
+                     onclick="setMainImage('${img}'); this.parentElement.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active')); this.classList.add('active');"
+                     style="cursor:pointer;">
+            `).join('');
+
+            const stars = Array(5).fill('<i class="fas fa-star"></i>').join('');
+
+            display.innerHTML = `
+                <div class="details-layout">
+                    <div class="gallery-side">
+                        <div class="main-image">
+                            <img id="main-product-img" src="${gallery[0]}" alt="${product.name}">
+                            <button class="wishlist-btn"><i class="far fa-heart"></i></button>
+                        </div>
+                        <div class="thumbnail-grid">
+                            ${thumbsHtml}
+                        </div>
+                    </div>
+                    <div class="content-side">
+                        <span class="product-badge badge-bestseller" style="position:static; display:inline-block; margin-bottom:12px;">Premium Heritage</span>
+                        <div class="rating-row" style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                            <div class="stars" style="color: var(--secondary); font-size:14px;">${stars}</div>
+                            <span class="label-sm" style="color:var(--on-surface-variant);">(${product.reviews || 48} Reviews)</span>
+                        </div>
+                        <h1 style="font-size:24px; font-weight:700; margin-bottom:8px; color:var(--on-surface); line-height:1.3;">${product.name}</h1>
+                        <p style="font-size:22px; font-weight:800; color:var(--primary); margin-bottom:28px;">${product.price.toLocaleString()} ETB</p>
+                        
+                        <div class="options-box" style="background:var(--surface-container-low); padding:16px; border-radius:var(--radius-md); margin-bottom:24px;">
+                            <p class="label-md" style="margin-bottom:12px; font-weight:600;">Select Rekebot Finish</p>
+                            <div class="option-chips" style="display:flex; gap:10px;">
+                                <button class="option-chip active" style="width:32px;height:32px;border-radius:50%;background:#5D3A1A;border:3px solid var(--primary);cursor:pointer;"></button>
+                                <button class="option-chip" style="width:32px;height:32px;border-radius:50%;background:#D4AF37;border:2px solid var(--outline-variant);cursor:pointer;"></button>
+                                <button class="option-chip" style="width:32px;height:32px;border-radius:50%;background:#E5E5E5;border:2px solid var(--outline-variant);cursor:pointer;"></button>
+                            </div>
+                        </div>
+
+                        <p class="label-sm" style="color:var(--tertiary); margin-bottom:16px;"><i class="fas fa-check-circle"></i> In Stock (Ships from Addis)</p>
+
+                        <div class="action-row" style="display:flex; gap:12px; margin-bottom:16px;">
+                            <div class="qty-selector" style="height:52px; width:130px; display:flex; align-items:center; border:1px solid var(--outline-variant); border-radius:var(--radius-default);">
+                                <button class="qty-btn" style="flex:1;height:100%;border:none;background:none;font-size:18px;cursor:pointer;" onclick="const i=document.getElementById('details-qty'); i.value=Math.max(1,+i.value-1);">−</button>
+                                <input type="number" id="details-qty" value="1" class="qty-input" style="width:40px;text-align:center;border:none;background:none;font-size:16px;font-weight:600;">
+                                <button class="qty-btn" style="flex:1;height:100%;border:none;background:none;font-size:18px;cursor:pointer;" onclick="const i=document.getElementById('details-qty'); i.value=+i.value+1;">+</button>
+                            </div>
+                            <button class="btn btn-primary" style="flex:1; height:52px;" onclick="addFromDetails('${product.id}', '${product.name}', ${product.price}, '${product.image}')">
+                                <i class="fas fa-shopping-bag"></i> Add to Cart
+                            </button>
+                        </div>
+                        
+                        <button class="btn btn-secondary" style="width:100%; height:52px; margin-bottom:24px; border:1px solid var(--outline-variant);">
+                            <i class="fas fa-wallet"></i> Buy with CBE Birr / Chapa
+                        </button>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px;">
+                            <div style="display:flex; align-items:center; gap:8px; padding:12px; background:var(--surface-container-low); border-radius:var(--radius-md);">
+                                <i class="fas fa-truck" style="color:var(--primary); font-size:18px;"></i>
+                                <span class="label-sm">Express Delivery<br><span style="color:var(--on-surface-variant);">2‑3 Business Days</span></span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px; padding:12px; background:var(--surface-container-low); border-radius:var(--radius-md);">
+                                <i class="fas fa-shield-alt" style="color:var(--primary); font-size:18px;"></i>
+                                <span class="label-sm">Secure Payments<br><span style="color:var(--on-surface-variant);">End‑to‑End Encrypted</span></span>
+                            </div>
+                        </div>
+
+                        <div style="border-top:1px solid var(--outline-variant); padding-top:24px;">
+                            <div style="display:flex; gap:0; border-bottom:1px solid var(--outline-variant); margin-bottom:20px;">
+                                <button class="tab-btn active" onclick="this.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active');" style="padding:10px 20px; border:none; background:none; cursor:pointer; font-weight:600; color:var(--primary); border-bottom:2px solid var(--primary);">Description</button>
+                                <button class="tab-btn" onclick="this.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active');" style="padding:10px 20px; border:none; background:none; cursor:pointer; color:var(--on-surface-variant); border-bottom:2px solid transparent;">Specifications</button>
+                                <button class="tab-btn" onclick="this.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active');" style="padding:10px 20px; border:none; background:none; cursor:pointer; color:var(--on-surface-variant); border-bottom:2px solid transparent;">Care Guide</button>
+                            </div>
+                            <p class="body-md" style="color:var(--on-surface-variant); line-height:1.8;">
+                                Bring the soul of Ethiopia to your home with our authentic <strong>${product.name}</strong>. Each piece is handcrafted by master artisans using techniques passed through generations, ensuring every item is a unique work of art.<br><br>
+                                <ul style="padding-left:20px; line-height:2;">
+                                    <li>100% Organic Local Materials</li>
+                                    <li>Hand-finished by Master Artisans</li>
+                                    <li>Supports local Ethiopian communities</li>
+                                    <li>Authentic heritage craftsmanship</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function addFromDetails(id, name, price, image) {
+            const qty = parseInt(document.getElementById('details-qty').value) || 1;
+            for (let i = 0; i < qty; i++) addToCart(id, name, price, image);
+            const btn = document.querySelector('.btn.btn-primary');
+            btn.innerHTML = '<i class="fas fa-check"></i> Added to Cart!';
+            setTimeout(() => btn.innerHTML = '<i class="fas fa-shopping-bag"></i> Add to Cart', 2000);
+        }
+
+        loadProductDetails();
+    </script>
+</body>
+</html>
+
+
         async function loadProductDetails() {
             const display = document.getElementById('product-details-view');
             if (!productId) {

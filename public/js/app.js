@@ -192,6 +192,11 @@ async function loadProducts() {
     products.forEach((product, index) => {
         const card = document.createElement('div');
         card.className = 'product-card';
+        card.style.cursor = 'pointer';
+        card.onclick = (e) => {
+            if (e.target.closest('.add-btn')) return;
+            location.href = 'product.html?id=' + product.id;
+        };
         
         let badgeHtml = '';
         if (index % 3 === 0) badgeHtml = '<span class="product-badge badge-bestseller">Best Seller</span>';
@@ -207,7 +212,7 @@ async function loadProducts() {
                 <h3 class="product-name">${product.name}</h3>
                 <div class="product-rating">
                     <i class="fas fa-star"></i>
-                    <span>${product.rating || '4.8'} (${product.reviews || '20'} reviews)</span>
+                    <span>${product.rating} (${product.reviews} reviews)</span>
                 </div>
                 <div class="product-price-row">
                     <p class="product-price">${product.price.toLocaleString()} ETB</p>
@@ -216,13 +221,11 @@ async function loadProducts() {
                     </button>
                 </div>
             </div>
-            <div style="padding: 0 16px 16px;">
-                <a href="product.html?id=${product.id}" class="btn btn-ghost" style="width: 100%; font-size: 12px; height: 32px; border: 1px solid var(--outline-variant);">View Details</a>
-            </div>
         `;
         productGrid.appendChild(card);
     });
 }
+
 
 function addToCart(id, name, price, image) {
     const existing = cart.find(item => item.id === id);
