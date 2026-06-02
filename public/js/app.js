@@ -1,7 +1,12 @@
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+window.appCart = JSON.parse(localStorage.getItem('cart')) || [];
+window.appWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+window.allCachedProducts = [];
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Populate cache from demo if still empty
+    if (window.allCachedProducts.length === 0 && typeof demoProducts !== 'undefined') {
+        window.allCachedProducts = [...demoProducts];
+    }
   updateCartCount();
   checkAuth();
   updateActiveNav();
@@ -199,9 +204,10 @@ async function loadProducts() {
     }
   } catch (err) {
     console.warn("API inaccessible, using demo collection.");
-    products = demoProducts;
+    products = typeof demoProducts !== 'undefined' ? demoProducts : [];
   }
 
+  window.allCachedProducts = products;
   productGrid.innerHTML = "";
 
   products.forEach((product, index) => {
@@ -219,7 +225,9 @@ async function loadProducts() {
         '<span class="product-badge badge-bestseller">Best Seller</span>';
     else if (index % 5 === 0)
       badgeHtml = '<span class="product-badge badge-limited">Limited</span>';
-    const isWishlisted = wishlist.some((item) => item.id === product.id);
+    const isWishlisted = window.appWishlist.some(
+      (item) => String(item.id) === String(product.id),
+    );
     card.innerHTML = `
             <div class="product-image" onclick="location.href='product.html?id=${product.id}'">
                 <img src="${product.image}" alt="${product.name}">
@@ -244,67 +252,78 @@ async function loadProducts() {
 }
 
 function toggleWishlist(id) {
-  const product = allCachedProducts.find((p) => p.id === id);
-  if (!product) return;
-
-  const index = wishlist.findIndex((item) => item.id === id);
-  if (index === -1) {
-    wishlist.push(product);
-  } else {
-    wishlist.splice(index, 1);
+  // Ensure we have products to toggle
+  if (!window.allCachedProducts || window.allCachedProducts.length === 0) {
+    window.allCachedProducts = typeof demoProducts !== 'undefined' ? [...demoProducts] : [];
   }
 
-  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+  const product = window.allCachedProducts.find((p) => String(p.id) === String(id));
+  if (!product) {
+    console.error("Product not found for wishlist toggle:", id);
+    return;
+  }
+
+  const index = window.appWishlist.findIndex((item) => String(item.id) === String(id));
+  if (index === -1) {
+    window.appWishlist.push(product);
+  } else {
+    window.appWishlist.splice(index, 1);
+  }
+
+  localStorage.setItem("wishlist", JSON.stringify(window.appWishlist));
   updateCartCount();
 
-  // Refresh UI on pages with grid
-  if (typeof loadProducts === "function") {
-    const grid = document.getElementById("product-grid");
-    if (grid) renderProducts(allCachedProducts, "product-grid");
-  }
+  // Instant UI Sync across any element that might represent this product
+  const isNowWishlisted = window.appWishlist.some((item) => String(item.id) === String(id));
+  const allRelatedBtns = document.querySelectorAll(`button[onclick*="'${id}'"]`);
 
-  // Update individual buttons if they exist (Product Detail Page)
-  const detailBtn = document.querySelector(".main-image .wishlist-btn");
-  if (detailBtn) {
-    const isNowWishlisted = wishlist.some((item) => item.id === id);
-    detailBtn.classList.toggle("active", isNowWishlisted);
-    const icon = detailBtn.querySelector("i");
-    if (icon) {
-      icon.className = isNowWishlisted ? "fas fa-heart" : "far fa-heart";
+  allRelatedBtns.forEach((btn) => {
+    if (btn.classList.contains('wishlist-btn') || btn.classList.contains('wishlist-btn-large') || btn.classList.contains('active')) {
+        btn.classList.toggle("active", isNowWishlisted);
+        const heartIcon = btn.querySelector("i");
+        if (heartIcon) {
+            heartIcon.className = isNowWishlisted ? "fas fa-heart" : "far fa-heart";
+            // Add a small pulse animation for feedback
+            btn.style.transform = 'scale(1.25)';
+            setTimeout(() => btn.style.transform = '', 200);
+        }
     }
-  }
+  });
+
+  // Specifically handle the wishlist page refresh
+  if (typeof renderWishlist === "function") renderWishlist();
 }
 
 function addToCart(id, name, price, image) {
-  const existing = cart.find((item) => item.id === id);
+  const existing = window.appCart.find((item) => String(item.id) === String(id));
   if (existing) {
     existing.quantity += 1;
   } else {
-    cart.push({ id, name, price, image, quantity: 1 });
+    window.appCart.push({ id, name, price, image, quantity: 1 });
   }
   saveCart();
   updateCartCount();
 }
 
 function saveCart() {
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cart", JSON.stringify(window.appCart));
 }
 
 function updateCartCount() {
   const cartCount = document.getElementById("cart-count");
   if (cartCount) {
-    cartCount.textContent = cart.reduce(
+    cartCount.textContent = window.appCart.reduce(
       (total, item) => total + item.quantity,
       0,
     );
   }
   const wishlistCount = document.getElementById("wishlist-count");
   if (wishlistCount) {
-    wishlistCount.textContent = wishlist.length;
+    wishlistCount.textContent = window.appWishlist.length;
   }
   const countSummaryEl = document.getElementById("item-total-count");
   if (countSummaryEl)
-    countSummaryEl.textContent = cart.reduce(
+    countSummaryEl.textContent = window.appCart.reduce(
       (sum, item) => sum + item.quantity,
       0,
     );

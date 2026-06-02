@@ -240,6 +240,11 @@
           product = demoProducts.find((p) => p.id === productId);
         }
 
+        // Ensure product is in global cache for wishlist toggle
+        if (product && !window.allCachedProducts.some((p) => String(p.id) === String(product.id))) {
+          window.allCachedProducts.push(product);
+        }
+
         if (!product) {
           display.innerHTML =
             '<h1 class="headline-md">Heritage item not found</h1>';
@@ -265,7 +270,9 @@
 
         const stars = Array(5).fill('<i class="fas fa-star"></i>').join("");
 
-        const isWishlisted = wishlist.some((item) => item.id === product.id);
+        const isWishlisted = window.appWishlist.some(
+          (item) => String(item.id) === String(product.id),
+        );
         display.innerHTML = `
                 <div class="details-layout">
                     <div class="gallery-side">

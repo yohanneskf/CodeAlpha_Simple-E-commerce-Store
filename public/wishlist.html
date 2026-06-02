@@ -95,11 +95,11 @@
         });
 
         function renderWishlist() {
-            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const wishlist = window.appWishlist;
             const grid = document.getElementById('wishlist-grid');
             const emptyState = document.getElementById('empty-wishlist');
 
-            if (wishlist.length === 0) {
+            if (!wishlist || wishlist.length === 0) {
                 grid.style.display = 'none';
                 emptyState.style.display = 'block';
                 return;
