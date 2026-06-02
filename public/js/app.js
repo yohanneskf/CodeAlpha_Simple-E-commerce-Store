@@ -337,7 +337,7 @@ function renderCart() {
 
   if (!cartItems) return;
 
-  if (cart.length === 0) {
+  if (window.appCart.length === 0) {
     cartItems.innerHTML =
       '<div style="text-align:center; padding: 48px;"><p class="body-lg">Your cart is empty.</p><a href="shop.html" class="btn btn-primary" style="margin-top: 20px;">Start Shopping</a></div>';
     if (subtotalEl) subtotalEl.textContent = "0 ETB";
@@ -349,7 +349,7 @@ function renderCart() {
   cartItems.innerHTML = "";
   let total = 0;
 
-  cart.forEach((item) => {
+  window.appCart.forEach((item) => {
     const subtotal = item.price * item.quantity;
     total += subtotal;
 
@@ -385,32 +385,32 @@ function renderCart() {
     cartTotalEl.textContent = `${finalTotal.toLocaleString()} ETB`;
 }
 
-function updateQuantity(id, qty) {
-  if (qty < 1) {
-    removeFromCart(id);
-    return;
-  }
-  const item = cart.find((i) => i.id === id);
+function updateQuantity(id, newQty) {
+  if (newQty < 1) return removeFromCart(id);
+  const item = window.appCart.find((i) => String(i.id) === String(id));
   if (item) {
-    item.quantity = parseInt(qty);
+    item.quantity = newQty;
     saveCart();
-    renderCart();
     updateCartCount();
+    renderCart();
   }
 }
 
 function removeFromCart(id) {
-  cart = cart.filter((item) => item.id !== id);
-  saveCart();
-  renderCart();
-  updateCartCount();
+  const index = window.appCart.findIndex((i) => String(i.id) === String(id));
+  if (index !== -1) {
+    window.appCart.splice(index, 1);
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
 }
 
 function clearCart() {
-  if (confirm("Are you sure you want to clear your cart?")) {
-    cart = [];
+  if (confirm("Clear all items from your heritage cart?")) {
+    window.appCart = [];
     saveCart();
-    renderCart();
     updateCartCount();
+    renderCart();
   }
 }

@@ -202,7 +202,7 @@
             const taxEl = document.getElementById('tax-amount');
             const totalEl = document.getElementById('cart-total');
             
-            if (cart.length === 0) {
+            if (!window.appCart || window.appCart.length === 0) {
                 location.href = 'cart.html';
                 return;
             }
@@ -210,7 +210,7 @@
             container.innerHTML = '';
             let total = 0;
             
-            cart.forEach(item => {
+            window.appCart.forEach(item => {
                 total += item.price * item.quantity;
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'summary-item';
@@ -238,8 +238,8 @@
 
         async function placeOrder() {
             try {
-                // In a real app, send to API
-                // For now, clear cart and redirect
+                // Clear cart global and storage
+                window.appCart = [];
                 localStorage.removeItem('cart');
                 location.href='order-confirmation.html';
             } catch (err) {
