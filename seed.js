@@ -15,58 +15,70 @@ const seed = async () => {
 
     const products = [
       {
-        name: 'Premium Wireless Headphones',
-        description: 'High-quality noise-canceling headphones with 40h battery life.',
-        price: 8500,
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
+        name: 'Artisan Jebena (Large)',
+        description: 'Traditional handmade clay pot, fired in traditional kilns to ensure the perfect heat retention required for authentic "Buna" flavor.',
+        price: 1450,
+        image: 'https://images.unsplash.com/photo-1594494024039-df071d64388e?w=800&q=80',
         stock: 15,
-        category: 'Electronics'
+        category: 'Handmade Ceramic',
+        rating: 4.9,
+        reviews: 124
       },
       {
-        name: 'Modern Smart Watch',
-        description: 'Keep track of your fitness and notifications with this sleek watch.',
-        price: 4200,
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
-        stock: 20,
-        category: 'Electronics'
+        name: 'Modern Habesha Kemis',
+        description: 'Elite hand-spun cotton dress with intricate embroidery. Each thread represents centuries of Ethiopian craftsmanship.',
+        price: 8900,
+        image: 'https://images.unsplash.com/photo-1590033062325-17730e25603d?w=800&q=80',
+        stock: 8,
+        category: 'Hand-spun Cotton',
+        rating: 5.0,
+        reviews: 86
       },
       {
-        name: 'Leather Messenger Bag',
-        description: 'Handcrafted genuine leather bag for the modern professional.',
-        price: 3800,
-        image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&q=80',
-        stock: 10,
-        category: 'Accessories'
-      },
-      {
-        name: 'Minimalist Coffee Mug',
-        description: 'Ceramic matte finish mug for your perfect morning brew.',
+        name: 'Authentic Berbere Blend',
+        description: 'Sun-dried peppers from Gojjam, blended with 12 organic spices for the perfect balance of heat and flavor.',
         price: 450,
-        image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=500&q=80',
+        image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80',
         stock: 50,
-        category: 'Home'
+        category: 'Organic Spices',
+        rating: 4.8,
+        reviews: 210
       },
       {
-        name: 'Professional Camera Lens',
-        description: '50mm f/1.8 prime lens for stunning portrait photography.',
-        price: 12500,
-        image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&q=80',
+        name: 'Gonderine Filigree Cross',
+        description: 'Exquisite silver pendant handcrafted in Gonder using the ancient filigree technique.',
+        price: 3200,
+        image: 'https://images.unsplash.com/photo-1611085583191-a3b1a620e44a?w=800&q=80',
         stock: 5,
-        category: 'Electronics'
+        category: 'Silver Jewelry',
+        rating: 4.9,
+        reviews: 45
       },
       {
-        name: 'Retro Bluetooth Speaker',
-        description: 'Vintage design with modern sound technology.',
-        price: 2900,
-        image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&q=80',
-        stock: 12,
-        category: 'Electronics'
+        name: 'Sidama A-Grade Green Beans (1kg)',
+        description: 'Direct from Ethiopian farmers. Single-origin, high-altitude coffee beans with floral notes.',
+        price: 450,
+        image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80',
+        stock: 100,
+        category: 'Coffee Beans',
+        rating: 4.7,
+        reviews: 320
+      },
+      {
+        name: 'Ebony Clay Gini Burner',
+        description: 'Traditionally used for roasting coffee during the ceremony. Sleek obsidian-like finish.',
+        price: 1200,
+        image: 'https://images.unsplash.com/photo-1578326457399-3b34dbbf23b8?w=800&q=80',
+        stock: 20,
+        category: 'Incense',
+        rating: 4.6,
+        reviews: 58
       }
     ];
 
     await Product.bulkCreate(products);
 
-    console.log('Database seeded successfully!');
+    console.log('Database seeded successfully with HabeshaMart products!');
     process.exit(0);
   } catch (err) {
     console.error('Error seeding database:', err);

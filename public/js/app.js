@@ -62,7 +62,7 @@ function addToCart(id, name, price, image) {
     }
     saveCart();
     updateCartCount();
-    alert(`${name} added to cart!`);
+    // Subtle feedback could be added here
 }
 
 function saveCart() {
@@ -73,16 +73,24 @@ function updateCartCount() {
     const count = cart.reduce((sum, item) => sum + item.quantity, 0);
     const countEl = document.getElementById('cart-count');
     if (countEl) countEl.textContent = count;
+    
+    const countSummaryEl = document.getElementById('item-total-count');
+    if (countSummaryEl) countSummaryEl.textContent = count;
 }
 
 function renderCart() {
     const cartItems = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
+    const subtotalEl = document.getElementById('subtotal-amount');
+    const taxEl = document.getElementById('tax-amount');
+    const cartTotalEl = document.getElementById('cart-total');
+    
     if (!cartItems) return;
 
     if (cart.length === 0) {
-        cartItems.innerHTML = '<tr><td colspan="4" style="text-align:center">Your cart is empty.</td></tr>';
-        cartTotal.textContent = '0 ETB';
+        cartItems.innerHTML = '<div style="text-align:center; padding: 48px;"><p class="body-lg">Your cart is empty.</p><a href="/shop.html" class="btn btn-primary" style="margin-top: 20px;">Start Shopping</a></div>';
+        if (subtotalEl) subtotalEl.textContent = '0 ETB';
+        if (taxEl) taxEl.textContent = '0 ETB';
+        if (cartTotalEl) cartTotalEl.textContent = '0 ETB';
         return;
     }
 
@@ -93,28 +101,42 @@ function renderCart() {
         const subtotal = item.price * item.quantity;
         total += subtotal;
         
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <img src="${item.image}" width="50" style="border-radius:5px">
-                    <span>${item.name}</span>
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        itemDiv.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+            <div class="cart-item-info">
+                <div class="cart-item-header">
+                    <h4 class="cart-item-title">${item.name}</h4>
+                    <p class="title-lg">${item.price} ETB</p>
                 </div>
-            </td>
-            <td>${item.price} ETB</td>
-            <td>
-                <input type="number" value="${item.quantity}" min="1" style="width:50px; padding:5px;" onchange="updateQuantity('${item.id}', this.value)">
-            </td>
-            <td>${subtotal} ETB</td>
-            <td><button class="btn" style="background:#ef4444; color:white; padding:5px 10px;" onclick="removeFromCart('${item.id}')">Remove</button></td>
+                <p class="cart-item-meta">Category: Authentic Heritage</p>
+                <div class="cart-item-actions">
+                    <div class="qty-selector">
+                        <button class="qty-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})">-</button>
+                        <input type="number" value="${item.quantity}" class="qty-input" readonly>
+                        <button class="qty-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart('${item.id}')"><i class="far fa-trash-alt"></i></button>
+                </div>
+            </div>
         `;
-        cartItems.appendChild(tr);
+        cartItems.appendChild(itemDiv);
     });
 
-    cartTotal.textContent = `${total} ETB`;
+    const tax = total * 0.15; // 15% VAT
+    const finalTotal = total + tax;
+
+    if (subtotalEl) subtotalEl.textContent = `${total.toLocaleString()} ETB`;
+    if (taxEl) taxEl.textContent = `${tax.toLocaleString()} ETB`;
+    if (cartTotalEl) cartTotalEl.textContent = `${finalTotal.toLocaleString()} ETB`;
 }
 
 function updateQuantity(id, qty) {
+    if (qty < 1) {
+        removeFromCart(id);
+        return;
+    }
     const item = cart.find(i => i.id === id);
     if (item) {
         item.quantity = parseInt(qty);
@@ -129,4 +151,13 @@ function removeFromCart(id) {
     saveCart();
     renderCart();
     updateCartCount();
+}
+
+function clearCart() {
+    if (confirm('Are you sure you want to clear your cart?')) {
+        cart = [];
+        saveCart();
+        renderCart();
+        updateCartCount();
+    }
 }

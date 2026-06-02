@@ -3,87 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - EliteStore</title>
+    <title>Your Shopping Cart - HabeshaMart</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <a href="/" class="logo">ELITE<span>STORE</span></a>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/shop.html">Shop</a></li>
-                <li><a href="/login.html" id="auth-link">Login</a></li>
-            </ul>
-        </nav>
-        <div class="cart-icon" onclick="location.href='/cart.html'">
-            <i class="fas fa-shopping-cart fa-lg"></i>
-            <span id="cart-count">0</span>
+        <div class="container header-inner">
+            <a href="/" class="logo">HabeshaMart</a>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/shop.html">Categories</a>
+                <a href="#" class="active">Cart</a>
+            </nav>
+            <div class="header-actions">
+                <div class="cart-icon" onclick="location.href='/cart.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main>
-        <h1>Your Shopping Cart</h1>
-        <table class="cart-table">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="cart-items">
-                <!-- Cart items will be rendered here -->
-            </tbody>
-        </table>
+    <main class="container">
+        <h1 class="headline-md" style="margin-top: 40px; margin-bottom: 24px;">Your Shopping Cart</h1>
 
-        <div class="cart-total">
-            Total: <span id="cart-total">0 ETB</span>
-        </div>
+        <div class="cart-layout">
+            <div class="cart-items-container">
+                <div id="cart-items">
+                    <!-- Items will be injected here -->
+                    <div class="loader">Refining your selection...</div>
+                </div>
+                
+                <div class="cart-actions-bottom">
+                    <a href="/shop.html" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+                    <button class="btn btn-ghost" onclick="clearCart()">Clear Cart</button>
+                </div>
+            </div>
 
-        <div style="text-align: right; margin-top: 2rem;">
-            <button class="btn btn-primary" style="padding: 1rem 3rem;" onclick="proceedToCheckout()">Checkout</button>
+            <aside class="order-summary">
+                <h3 class="title-lg" style="margin-bottom: 24px;">Order Summary</h3>
+                <div class="summary-row">
+                    <span class="body-md">Subtotal (<span id="item-total-count">0</span> items)</span>
+                    <span class="body-md" id="subtotal-amount">0 ETB</span>
+                </div>
+                <div class="summary-row">
+                    <span class="body-md">Shipping to Addis Ababa</span>
+                    <span class="body-md" style="color: var(--tertiary);">FREE</span>
+                </div>
+                <div class="summary-row">
+                    <span class="body-md">Estimated Taxes</span>
+                    <span class="body-md" id="tax-amount">0 ETB</span>
+                </div>
+                
+                <hr class="summary-divider">
+                
+                <div class="summary-row total-row">
+                    <span class="title-lg">Total</span>
+                    <span class="title-lg" id="cart-total" style="color: var(--primary);">0 ETB</span>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; height: 56px; margin-top: 24px;" onclick="location.href='/checkout.html'">
+                    Proceed to Checkout <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                </button>
+
+                <div class="payment-trust">
+                    <p class="label-sm">Secured by Ethiopian Financial Systems</p>
+                    <div class="payment-badges">
+                        <span class="badge chapa">CHAPA</span>
+                        <span class="badge cbe">CBE BIRR</span>
+                    </div>
+                </div>
+
+                <div class="promo-box">
+                    <input type="text" placeholder="Promo code" class="input-field">
+                    <button class="btn btn-secondary">Apply</button>
+                </div>
+
+                <div class="delivery-notice">
+                    <i class="fas fa-truck-fast"></i>
+                    <p class="label-sm">Enjoy free express delivery within Addis Ababa for orders over 5,000 ETB.</p>
+                </div>
+            </aside>
         </div>
     </main>
 
+    <!-- Footer same as index -->
+    <footer class="desktop-footer">
+        <div class="container footer-bottom" style="border: none; padding-top: 0;">
+            <p>&copy; 2026 HabeshaMart. Heritage Modernism in Commerce.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Tab Bar same as index -->
+    <nav class="mobile-tab-bar">
+        <a href="/" class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/shop.html" class="tab-item">
+            <i class="fas fa-th-large"></i>
+            <span>Categories</span>
+        </a>
+        <a href="/cart.html" class="tab-item active">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </a>
+        <a href="/profile.html" class="tab-item">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
     <script src="js/api.js"></script>
     <script src="js/app.js"></script>
-    <script>
-        async function proceedToCheckout() {
-            if (cart.length === 0) {
-                alert('Your cart is empty!');
-                return;
-            }
-            if (!api.getToken()) {
-                alert('Please login to checkout.');
-                window.location.href = '/login.html';
-                return;
-            }
-
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            try {
-                const response = await api.post('/orders', {
-                    items: cart,
-                    totalAmount: total
-                });
-
-                if (response.checkoutUrl) {
-                    // Redirect to Chapa
-                    window.location.href = response.checkoutUrl;
-                } else if (response.order) {
-                    alert('Order created successfully (Mock mode)');
-                } else {
-                    alert('Checkout failed: ' + (response.message || 'Unknown error'));
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Error during checkout.');
-            }
-        }
-    </script>
 </body>
 </html>
