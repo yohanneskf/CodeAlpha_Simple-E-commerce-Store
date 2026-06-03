@@ -112,16 +112,30 @@
             wishlist.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
+
+                // star generation
+                const fullStars = Math.floor(product.rating || 0);
+                const halfStar = (product.rating || 0) % 1 >= 0.5 ? 1 : 0;
+                let starsHtml = "";
+                for(let i=0; i<fullStars; i++) starsHtml += '<i class="fas fa-star"></i>';
+                if(halfStar) starsHtml += '<i class="fas fa-star-half-alt"></i>';
+                for(let i=fullStars+halfStar; i<5; i++) starsHtml += '<i class="far fa-star"></i>';
+
                 card.innerHTML = `
                     <div class="product-image" onclick="location.href='product.html?id=${product.id}'">
                         <img src="${product.image}" alt="${product.name}">
                         <button class="wishlist-btn active" onclick="event.stopPropagation(); toggleWishlist('${product.id}')">
                             <i class="fas fa-heart"></i>
                         </button>
+                        ${product.badge ? `<span class="product-badge badge-${product.badge.toLowerCase()}">${product.badge}</span>` : ""}
                     </div>
                     <div class="product-info" onclick="location.href='product.html?id=${product.id}'">
-                        <div class="product-category">${product.category.toUpperCase()}</div>
+                        <div class="product-category">${product.category ? product.category.toUpperCase() : "HERITAGE"}</div>
                         <h3 class="product-name">${product.name}</h3>
+                        <div class="product-rating">
+                            <span class="stars">${starsHtml}</span>
+                            <span class="reviews-count">(${product.reviews || 0})</span>
+                        </div>
                         <div class="product-footer">
                             <div class="product-price">${product.price.toLocaleString()} ETB</div>
                             <button class="add-to-cart-sm" onclick="event.stopPropagation(); addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">

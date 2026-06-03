@@ -215,30 +215,37 @@ async function loadProducts() {
     card.className = "product-card";
     card.style.cursor = "pointer";
     card.onclick = (e) => {
-      if (e.target.closest(".add-btn")) return;
+      if (e.target.closest(".add-to-cart-sm") || e.target.closest(".wishlist-btn")) return;
       location.href = "product.html?id=" + product.id;
     };
 
-    let badgeHtml = "";
-    if (index % 3 === 0)
-      badgeHtml =
-        '<span class="product-badge badge-bestseller">Best Seller</span>';
-    else if (index % 5 === 0)
-      badgeHtml = '<span class="product-badge badge-limited">Limited</span>';
     const isWishlisted = window.appWishlist.some(
       (item) => String(item.id) === String(product.id),
     );
+
+    // stars for rating
+    const fullStars = Math.floor(product.rating || 0);
+    const halfStar = (product.rating || 0) % 1 >= 0.5 ? 1 : 0;
+    let starsHtml = "";
+    for(let i=0; i<fullStars; i++) starsHtml += '<i class="fas fa-star"></i>';
+    if(halfStar) starsHtml += '<i class="fas fa-star-half-alt"></i>';
+    for(let i=fullStars+halfStar; i<5; i++) starsHtml += '<i class="far fa-star"></i>';
+
     card.innerHTML = `
-            <div class="product-image" onclick="location.href='product.html?id=${product.id}'">
+            <div class="product-image">
                 <img src="${product.image}" alt="${product.name}">
                 <button class="wishlist-btn ${isWishlisted ? "active" : ""}" onclick="event.stopPropagation(); toggleWishlist('${product.id}')">
                     <i class="${isWishlisted ? "fas" : "far"} fa-heart"></i>
                 </button>
-                ${product.badge ? `<span class="badge-${product.badge.toLowerCase()}">${product.badge}</span>` : ""}
+                ${product.badge ? `<span class="product-badge badge-${product.badge.toLowerCase()}">${product.badge}</span>` : ""}
             </div>
-            <div class="product-info" onclick="location.href='product.html?id=${product.id}'">
-                <div class="product-category">${product.category.toUpperCase()}</div>
+            <div class="product-info">
+                <div class="product-category">${product.category ? product.category.toUpperCase() : "HERITAGE"}</div>
                 <h3 class="product-name">${product.name}</h3>
+                <div class="product-rating">
+                    <span class="stars">${starsHtml}</span>
+                    <span class="reviews-count">(${product.reviews || 0})</span>
+                </div>
                 <div class="product-footer">
                     <div class="product-price">${product.price.toLocaleString()} ETB</div>
                     <button class="add-to-cart-sm" onclick="event.stopPropagation(); addToCart('${product.id}', '${product.name}', ${product.price}, '${product.image}')">

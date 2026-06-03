@@ -522,15 +522,25 @@ footer.desktop-footer {
 .product-rating {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-size: 11px;
   color: var(--on-surface-variant);
   margin-bottom: 8px;
 }
 
-.product-rating i {
+.product-rating .stars {
+  display: flex;
+  gap: 2px;
   color: var(--secondary);
+}
+
+.product-rating i {
   font-size: 10px;
+}
+
+.product-rating .reviews-count {
+  font-weight: 500;
+  opacity: 0.8;
 }
 
 .product-price-row {

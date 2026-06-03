@@ -268,7 +268,13 @@
           )
           .join("");
 
-        const stars = Array(5).fill('<i class="fas fa-star"></i>').join("");
+        // star generation
+        const fullStars = Math.floor(product.rating || 0);
+        const halfStar = (product.rating || 0) % 1 >= 0.5 ? 1 : 0;
+        let starsHtml = "";
+        for(let i=0; i<fullStars; i++) starsHtml += '<i class="fas fa-star"></i>';
+        if(halfStar) starsHtml += '<i class="fas fa-star-half-alt"></i>';
+        for(let i=fullStars+halfStar; i<5; i++) starsHtml += '<i class="far fa-star"></i>';
 
         const isWishlisted = window.appWishlist.some(
           (item) => String(item.id) === String(product.id),
@@ -287,16 +293,16 @@
                         </div>
                     </div>
                     <div class="content-side">
-                        <span class="product-badge badge-bestseller" style="position:static; display:inline-block; margin-bottom:12px;">Premium Heritage</span>
+                        ${product.badge ? `<span class="product-badge badge-${product.badge.toLowerCase()}" style="position:static; display:inline-block; margin-bottom:12px;">${product.badge}</span>` : ""}
                         <div class="rating-row" style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                            <div class="stars" style="color: var(--secondary); font-size:14px;">${stars}</div>
-                            <span class="label-sm" style="color:var(--on-surface-variant);">(${product.reviews || 48} Reviews)</span>
+                            <div class="stars" style="color: var(--secondary); font-size:14px;">${starsHtml}</div>
+                            <span class="label-sm" style="color:var(--on-surface-variant);">(${product.reviews || 0} Reviews)</span>
                         </div>
                         <h1 style="font-size:24px; font-weight:700; margin-bottom:8px; color:var(--on-surface); line-height:1.3;">${product.name}</h1>
                         <p style="font-size:22px; font-weight:800; color:var(--primary); margin-bottom:28px;">${product.price.toLocaleString()} ETB</p>
                         
                         <div class="options-box" style="background:var(--surface-container-low); padding:16px; border-radius:var(--radius-md); margin-bottom:24px;">
-                            <p class="label-md" style="margin-bottom:12px; font-weight:600;">Select Rekebot Finish</p>
+                            <p class="label-md" style="margin-bottom:12px; font-weight:600;">Select Options</p>
                             <div class="option-chips" style="display:flex; gap:10px;">
                                 <button class="option-chip active" style="width:32px;height:32px;border-radius:50%;background:#5D3A1A;border:3px solid var(--primary);cursor:pointer;"></button>
                                 <button class="option-chip" style="width:32px;height:32px;border-radius:50%;background:#D4AF37;border:2px solid var(--outline-variant);cursor:pointer;"></button>
@@ -339,7 +345,7 @@
                                 <button class="tab-btn" onclick="this.parentElement.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active');" style="padding:10px 20px; border:none; background:none; cursor:pointer; color:var(--on-surface-variant); border-bottom:2px solid transparent;">Care Guide</button>
                             </div>
                             <p class="body-md" style="color:var(--on-surface-variant); line-height:1.8;">
-                                Bring the soul of Ethiopia to your home with our authentic <strong>${product.name}</strong>. Each piece is handcrafted by master artisans using techniques passed through generations, ensuring every item is a unique work of art.<br><br>
+                                ${product.description || `Bring the soul of Ethiopia to your home with our authentic <strong>${product.name}</strong>. Each piece is handcrafted by master artisans using techniques passed through generations.`}<br><br>
                                 <ul style="padding-left:20px; line-height:2;">
                                     <li>100% Organic Local Materials</li>
                                     <li>Hand-finished by Master Artisans</li>
