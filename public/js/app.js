@@ -3,10 +3,6 @@ window.appWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 window.allCachedProducts = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Populate cache from demo if still empty
-    if (window.allCachedProducts.length === 0 && typeof demoProducts !== 'undefined') {
-        window.allCachedProducts = [...demoProducts];
-    }
   updateCartCount();
   checkAuth();
   updateActiveNav();
@@ -49,165 +45,39 @@ function checkAuth() {
   }
 }
 
-const demoProducts = [
-  {
-    id: "1",
-    name: "Artisan Jebena (Large)",
-    category: "Handmade Ceramic",
-    price: 1450,
-    image:
-      "https://images.unsplash.com/photo-1594494024039-df071d64388e?w=800&q=80",
-    rating: 4.9,
-    reviews: 124,
-  },
-  {
-    id: "2",
-    name: "Modern Habesha Kemis",
-    category: "Hand-spun Cotton",
-    price: 8900,
-    image:
-      "https://images.unsplash.com/photo-1590033062325-17730e25603d?w=800&q=80",
-    rating: 5.0,
-    reviews: 86,
-  },
-  {
-    id: "3",
-    name: "Authentic Berbere Blend",
-    category: "Organic Spices",
-    price: 450,
-    image:
-      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80",
-    rating: 4.8,
-    reviews: 210,
-  },
-  {
-    id: "4",
-    name: "Gonderine Filigree Cross",
-    category: "Silver Jewelry",
-    price: 3200,
-    image:
-      "https://images.unsplash.com/photo-1611085583191-a3b1a620e44a?w=800&q=80",
-    rating: 4.9,
-    reviews: 45,
-  },
-  {
-    id: "5",
-    name: "Sidama A-Grade Beans",
-    category: "Coffee Beans",
-    price: 450,
-    image:
-      "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=800&q=80",
-    rating: 4.7,
-    reviews: 320,
-  },
-  {
-    id: "6",
-    name: "Woven Jijat Ceremony Mat",
-    category: "Home Decor",
-    price: 2100,
-    image:
-      "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&q=80",
-    rating: 4.6,
-    reviews: 32,
-  },
-  {
-    id: "7",
-    name: "Ivory Teff (5kg Bag)",
-    category: "Spices & Grains",
-    price: 1850,
-    image:
-      "https://images.unsplash.com/photo-1615485290382-441e4d019cb5?w=800&q=80",
-    rating: 4.9,
-    reviews: 540,
-  },
-  {
-    id: "8",
-    name: "Hand-woven Netela Scarf",
-    category: "Traditional Wear",
-    price: 1200,
-    image:
-      "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&q=80",
-    rating: 4.8,
-    reviews: 215,
-  },
-  {
-    id: "9",
-    name: "Lideta Porcelain Set",
-    category: "Buna Essentials",
-    price: 3400,
-    image:
-      "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
-    rating: 4.9,
-    reviews: 78,
-  },
-  {
-    id: "10",
-    name: "Agelgil Basketry (S)",
-    category: "Artifacts",
-    price: 850,
-    image:
-      "https://images.unsplash.com/photo-1590736962231-5912384cda5a?w=800&q=80",
-    rating: 4.5,
-    reviews: 22,
-  },
-  {
-    id: "11",
-    name: "Ethiopian White Honey",
-    category: "Organic Grains",
-    price: 950,
-    image:
-      "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&q=80",
-    rating: 5.0,
-    reviews: 410,
-  },
-  {
-    id: "12",
-    name: "Leather Cross Sandals",
-    category: "Handmade Shoes",
-    price: 2400,
-    image:
-      "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&q=80",
-    rating: 4.7,
-    reviews: 56,
-  },
-  {
-    id: "13",
-    name: "Ebony Clay Gini Burner",
-    category: "Incense",
-    price: 1200,
-    image:
-      "https://images.unsplash.com/photo-1578326457399-3b34dbbf23b8?w=800&q=80",
-    rating: 4.6,
-    reviews: 58,
-  },
-  {
-    id: "14",
-    name: "Hand-carved Meskel Cross",
-    category: "Artifacts",
-    price: 4500,
-    image:
-      "https://images.unsplash.com/photo-1611085583191-a3b1a620e44a?w=800&q=80",
-    rating: 4.9,
-    reviews: 34,
-  },
-];
 
 async function loadProducts() {
   const productGrid = document.getElementById("product-grid");
   if (!productGrid) return;
 
-  let products;
+  let products = [];
   try {
-    products = await api.get("/products");
-    if (!products || products.length === 0 || products.error) {
-      products = demoProducts;
+    const response = await api.get("/products");
+    products = response;
+    
+    // Check if we got an error object or non-array
+    if (!products || products.error || !Array.isArray(products)) {
+        console.error("API Error or invalid format:", products);
+        products = [];
     }
   } catch (err) {
-    console.warn("API inaccessible, using demo collection.");
-    products = typeof demoProducts !== 'undefined' ? demoProducts : [];
+    console.error("Critical API Failure:", err);
+    products = [];
   }
 
   window.allCachedProducts = products;
+  
+  if (products.length === 0) {
+    productGrid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 60px;">
+            <i class="fas fa-box-open" style="font-size: 48px; color: var(--outline-variant); margin-bottom: 20px;"></i>
+            <h3 class="headline-md">No products found in Neon DB</h3>
+            <p class="body-md">Ensure you have run "node seed.js" and checked your DATABASE_URL.</p>
+        </div>
+    `;
+    return;
+  }
+
   productGrid.innerHTML = "";
 
   products.forEach((product, index) => {
