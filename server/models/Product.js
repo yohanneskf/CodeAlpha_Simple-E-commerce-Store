@@ -29,6 +29,17 @@ const Product = sequelize.define('Product', {
   category: {
     type: DataTypes.STRING,
   },
+  rating: {
+    type: DataTypes.FLOAT,
+    defaultValue: 0,
+  },
+  reviews: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
+  badge: {
+    type: DataTypes.STRING,
+  },
 });
 
 module.exports = Product;

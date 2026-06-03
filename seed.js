@@ -22,7 +22,8 @@ const seed = async () => {
         stock: 15,
         category: 'Handmade Ceramic',
         rating: 4.9,
-        reviews: 124
+        reviews: 124,
+        badge: 'BestSeller'
       },
       {
         name: 'Modern Habesha Kemis',
@@ -52,7 +53,8 @@ const seed = async () => {
         stock: 5,
         category: 'Silver Jewelry',
         rating: 4.9,
-        reviews: 45
+        reviews: 45,
+        badge: 'Limited'
       },
       {
         name: 'Sidama A-Grade Green Beans (1kg)',
